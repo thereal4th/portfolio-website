@@ -22,9 +22,10 @@ import {
   LucideProps
 } from 'lucide-react';
 
-import {GithubIcon, LinkedinIcon} from '../components/ui/CustomIcons'
+import {GithubIcon, LinkedinIcon} from '../components/ui/CustomIcons';
 import PORTFOLIO_DATA from '../data/PortfolioData';
-import Navigation from '../components/Navigation'
+import Navigation from '../components/Navigation';
+import About from './About/page';
 
 // --- TYPES ---
 
@@ -166,8 +167,6 @@ const Projects: React.FC = () => {
     </div>
   );
 };
-
-
 
 const Contact: React.FC = () => {
   const [message, setMessage] = useState<string>('');
