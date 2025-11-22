@@ -13,7 +13,7 @@ const About: React.FC = () => {
             I am a <span className = "text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">{PORTFOLIO_DATA.role}</span>.
           </p>
           <p className = "text-justify">
-            I code for my own enjoyment. I <span className="text-red-600 font-bold">love</span> the process of <span className = "text-white bg-white/10 px-1.5 py-0.5 rounded-md">creation and problem-solving</span>. Apart from coding, I've been playing the <span className="text-orange-400 font-bold">piano</span> for 10 years, and I'm also a dedicated practioner of the martial art <span className = "text-amber-400 font-bold">BJJ</span>.
+            I code for my own enjoyment. I love the process of creation and problem-solving. Apart from coding, I've been playing the piano for 10 years, and I'm also a dedicated practioner of the martial art BJJ.
           </p>
           <p className = "text-justify">
             If you're interested in the non-technical stuff about me, you can ask my AI assistant in the bottom-right corner :)
