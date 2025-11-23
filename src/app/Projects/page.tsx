@@ -6,10 +6,10 @@ import { JSX } from "react";
 const Projects: React.FC = () => {
   const getIcon = (type: string): JSX.Element => {
     switch (type) {
-      case 'Database': return <Database size={20} className="text-blue-400" />;
-      case 'Cpu': return <Cpu size={20} className="text-purple-400" />;
-      case 'Globe': return <Globe size={20} className="text-green-400" />;
-      default: return <Code size={20} className="text-blue-400" />;
+      case 'Database': return <Database size={24} className="text-blue-400" />;
+      case 'Cpu': return <Cpu size={24} className="text-purple-400" />;
+      case 'Globe': return <Globe size={24} className="text-green-400" />;
+      default: return <Code size={24} className="text-blue-400" />;
     }
   };
 
@@ -19,61 +19,54 @@ const Projects: React.FC = () => {
         <h2 className="text-3xl md:text-5xl font-bold text-white">Featured Projects</h2>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {PORTFOLIO_DATA.projects.map((project, index) => (
           <div 
             key={index}
-            className="group relative h-full"
+            className="group relative bg-slate-800/50 border border-slate-700 rounded-2xl hover:border-slate-500 transition-all duration-300 hover:-translate-y-2 overflow-hidden flex flex-col h-full"
           >
-            {/* Glow Effect Layer - appears on hover */}
-            <div className={`absolute -inset-0.5 bg-gradient-to-r ${project.color} rounded-2xl blur opacity-0 group-hover:opacity-75 transition duration-500`} />
+            {/* Color Hover Effect */}
+            <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
             
-            {/* Main Card Container */}
-            <div className="relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden flex flex-col h-full hover:border-slate-700 transition-all duration-300">
+            {/* Thumbnail Image Section - Increased from h-64 to h-72 */}
+            <div className="relative h-72 w-full overflow-hidden border-b border-slate-700/50">
+              <img 
+                src={project.thumbnail} 
+                alt={project.title}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
               
-              {/* Thumbnail Image Section */}
-              <div className="relative h-52 w-full overflow-hidden">
-                {/* Gradient Overlay for better text contrast if needed */}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10 opacity-60" />
-                
-                <img 
-                  src={project.thumbnail} 
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1"
-                />
-                
-                {/* Badge/Icon overlaid on image */}
-                <div className="absolute top-4 right-4 z-20 p-2 bg-slate-950/50 backdrop-blur-md rounded-lg border border-slate-700/50 shadow-sm">
-                   {getIcon(project.iconType)}
-                </div>
+              {/* Icon as Overlaid Badge */}
+              <div className="absolute top-3 right-3 z-20 p-2.5 bg-slate-900/60 backdrop-blur-md rounded-xl border border-slate-700/50 shadow-lg">
+                {getIcon(project.iconType)}
+              </div>
+            </div>
+
+            {/* Content Section */}
+            <div className="relative z-10 flex flex-col h-full p-8">
+              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
+                {project.title}
+              </h3>
+              
+              <p className="text-slate-400 leading-relaxed flex-grow">
+                {project.description}
+              </p>
+              
+              <div className="flex flex-wrap gap-2 mb-6">
+                {project.tags.map((tag, i) => (
+                  <span key={i} className="text-xs font-medium px-3 py-1 rounded-full bg-slate-700/50 text-slate-300 border border-slate-600">
+                    {tag}
+                  </span>
+                ))}
               </div>
 
-              {/* Content Section */}
-              <div className="p-6 flex flex-col flex-grow relative z-20 bg-slate-900">
-                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
-                  {project.title}
-                </h3>
-                
-                <p className="text-slate-400 mb-6 text-sm leading-relaxed flex-grow">
-                  {project.description}
-                </p>
-                
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {project.tags.map((tag, i) => (
-                    <span key={i} className="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 border border-slate-700/50">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex items-center gap-4 mt-auto pt-4 border-t border-slate-800">
-                  <a href={project.github} target="_blank" className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
-                    <GithubIcon size={18} /> Code
-                  </a>
-                  <a href={project.demo} target="_blank" className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
-                    <ExternalLink size={18} /> Demo
-                  </a>
-                </div>
+              <div className="flex items-center gap-4 mt-auto">
+                <a href={project.github} target="_blank" className="flex items-center gap-2 text-sm font-medium text-white hover:text-blue-400 transition-colors">
+                  <GithubIcon size={16} /> Code
+                </a>
+                <a href={project.demo} target="_blank" className="flex items-center gap-2 text-sm font-medium text-white hover:text-blue-400 transition-colors">
+                  <ExternalLink size={16} /> Demo
+                </a>
               </div>
             </div>
           </div>
