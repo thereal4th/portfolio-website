@@ -4,7 +4,7 @@ import React, { useState, useEffect} from 'react';
 
 import Navigation from '../components/Navigation';
 import About from './About/page';
-import Home from './About/Home/page';
+import Home from './Home/page';
 import Projects from './Projects/page';
 import Contact from './Contact/page';
 import ChatWidget from '../components/Chatwidget';
