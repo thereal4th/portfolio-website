@@ -3,7 +3,6 @@
 import { GithubIcon, LinkedinIcon } from "@/src/components/ui/CustomIcons";
 import PORTFOLIO_DATA from "@/src/data/PortfolioData";
 import { ChevronRight, Mail, Cpu, Globe, ExternalLink, Terminal } from "lucide-react";
-// 1. Make sure to use the curly braces for the import to fix the previous error
 import { GitHubCalendar } from 'react-github-calendar';
 
 type Page = 'home' | 'projects' | 'about' | 'contact';
@@ -168,18 +167,19 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
           </div>
 
           {/* Card 4: Spotify Embed (Functional) */}
-          <div className="md:col-span-2 bg-slate-900/50 border border-slate-800 rounded-2xl hover:border-slate-700 transition-colors overflow-hidden h-[180px] md:h-auto">
+          {/* FIX: Changed height to h-[152px] to exactly match the Spotify Compact Player size */}
+          <div className="md:col-span-2 bg-slate-900/50 border border-slate-800 rounded-2xl hover:border-slate-700 transition-colors overflow-hidden h-[152px]">
              <iframe 
                 style={{borderRadius: "12px"}} 
-                // You can replace the ID below '37i9dQZF1DWWQRwui0ExPn' with any playlist ID
+                // REPLACE THIS ID WITH YOUR PLAYLIST ID
                 src="https://open.spotify.com/embed/playlist/37i9dQZF1DWWQRwui0ExPn?utm_source=generator&theme=0" 
                 width="100%" 
-                height="100%" 
+                height="152" 
                 frameBorder="0" 
                 allowFullScreen 
                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
                 loading="lazy"
-                className="opacity-90 hover:opacity-100 transition-opacity"
+                className="opacity-90 hover:opacity-100 transition-opacity block"
               ></iframe>
           </div>
 

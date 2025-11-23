@@ -34,12 +34,18 @@ const App: React.FC = () => {
       <Navigation activePage={activePage} setActivePage={setActivePage} isScrolled={isScrolled} />
       
       <main className="transition-opacity duration-500 ease-in-out">
-        {activePage === 'home' && (
-          <div className="animate-in fade-in duration-700">
-            <Home setActivePage={setActivePage} />
-          </div>
-        )}
         
+        {/* MODIFIED SECTION:
+          We use CSS to hide Home instead of conditional rendering (&&).
+          This keeps the Spotify iframe alive in the background.
+        */}
+        <div className={activePage === 'home' ? 'block animate-in fade-in duration-700' : 'hidden'}>
+           <Home setActivePage={setActivePage} />
+        </div>
+        
+        {/* These pages can still use conditional rendering to save performance,
+           since they don't have persistent audio.
+        */}
         {activePage === 'projects' && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             <Projects />
