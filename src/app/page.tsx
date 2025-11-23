@@ -47,7 +47,7 @@ const App: React.FC = () => {
         )}
         
         {activePage === 'about' && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
             <About />
           </div>
         )}

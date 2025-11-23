@@ -36,11 +36,19 @@ interface HeroProps {
         </div>
   
         <div className="mb-4 flex justify-center gap-8 text-slate-500">
-          <GithubIcon className="hover:text-white cursor-pointer transition-colors" />
-          <LinkedinIcon className="hover:text-white cursor-pointer transition-colors" />
-          <Mail className="hover:text-white cursor-pointer transition-colors" />
-        </div>
-  
+          <a href="https://github.com/thereal4th" target="_blank" rel="noopener noreferrer">
+            <GithubIcon className="hover:text-white cursor-pointer transition-colors" />
+          </a>
+          
+          <a href="https://linkedin.com/in/alfredo-venturina-0475b532a" target="_blank" rel="noopener noreferrer">
+            <LinkedinIcon className="hover:text-white cursor-pointer transition-colors" />
+          </a>
+          
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=alfredoventurina@gmail.com" target="_blank" rel="noopener noreferrer">
+            <Mail className="hover:text-white cursor-pointer transition-colors" />
+          </a>
+      </div>
+
         <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-slate-700 bg-slate-800/50 backdrop-blur-sm">
           <span className="text-blue-400 text-sm font-medium flex items-center gap-2">
             <span className={`w-2 h-2 rounded-full ${isForHireClassName} animate-pulse`}/>
