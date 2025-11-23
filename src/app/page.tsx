@@ -4,10 +4,10 @@ import React, { useState, useEffect} from 'react';
 
 import Navigation from '../components/Navigation';
 import About from './About/page';
-import Hero from '../components/Hero';
+import Home from './About/Home/page';
 import Projects from './Projects/page';
 import Contact from './Contact/page';
-import ChatWidget from '../components/Chatwidget'
+import ChatWidget from '../components/Chatwidget';
 
 // --- TYPES ---
 
@@ -36,7 +36,7 @@ const App: React.FC = () => {
       <main className="transition-opacity duration-500 ease-in-out">
         {activePage === 'home' && (
           <div className="animate-in fade-in duration-700">
-            <Hero setActivePage={setActivePage} />
+            <Home setActivePage={setActivePage} />
           </div>
         )}
         

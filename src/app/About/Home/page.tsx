@@ -8,7 +8,7 @@ interface HeroProps {
     setActivePage: (page: Page) => void;
   }
   
-  const Hero: React.FC<HeroProps> = ({ setActivePage }) => {
+  const Home: React.FC<HeroProps> = ({ setActivePage }) => {
   
     let isForHire = true;
     let isForHireClassName = isForHire? "bg-green-400":"bg-red-400"
@@ -78,4 +78,4 @@ interface HeroProps {
     )
   };
 
-export default Hero;
+export default Home;
