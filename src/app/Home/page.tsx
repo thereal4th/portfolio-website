@@ -148,8 +148,14 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
             </div>
           </div>
 
-          {/* Card 3: Location */}
-          <div className="bg-gradient-to-br from-slate-900 to-blue-900/20 border border-slate-800 p-6 rounded-2xl hover:border-slate-700 transition-colors relative overflow-hidden">
+          {/* Card 3: Location (UPDATED WITH IMAGE BACKGROUND) */}
+          <div 
+            className="border border-slate-800 p-6 rounded-2xl hover:border-slate-700 transition-colors relative overflow-hidden group bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: "url('/flag.png')" }}
+          >
+             {/* Dark Overlay to ensure text readability over the flag image */}
+             <div className="absolute inset-0 bg-slate-950/60 transition-opacity group-hover:bg-slate-950/40 z-0" />
+             
              <div className="relative z-10">
                <h3 className="text-slate-400 text-sm font-medium mb-1">Based In</h3>
                <p className="text-xl text-white font-semibold flex items-center gap-2">
@@ -161,13 +167,9 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
                  UTC+8
                </div>
              </div>
-             <div className="absolute right-[-20px] bottom-[-20px] opacity-10">
-                <Globe size={100} />
-             </div>
           </div>
 
           {/* Card 4: Spotify Embed (Functional) */}
-          {/* FIX: Changed height to h-[152px] to exactly match the Spotify Compact Player size */}
           <div className="md:col-span-2 bg-slate-900/50 border border-slate-800 rounded-2xl hover:border-slate-700 transition-colors overflow-hidden h-[152px]">
              <iframe 
                 style={{borderRadius: "12px"}} 

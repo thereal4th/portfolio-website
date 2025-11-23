@@ -29,7 +29,7 @@ interface PortfolioData {
 // --- DATA ---
 
 const PORTFOLIO_DATA: PortfolioData = {
-  name: "Alfredo C. Venturina IV",
+  name: "Alfredo Venturina IV",
   nickname: "4th",
   role: "Full Stack Developer / Machine Learning Engineer",
   bio: "I love to create, design, and solve problems. Coding is an outlet for me to do what I love.",

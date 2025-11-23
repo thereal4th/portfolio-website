@@ -36,14 +36,13 @@ const App: React.FC = () => {
       <main className="transition-opacity duration-500 ease-in-out">
         
         {/* MODIFIED SECTION:
-          We use CSS to hide Home instead of conditional rendering (&&).
-          This keeps the Spotify iframe alive in the background.
+          use css to hide home instead of unmounting to keep music playing, may be inefficient, temporary solution
         */}
         <div className={activePage === 'home' ? 'block animate-in fade-in duration-700' : 'hidden'}>
            <Home setActivePage={setActivePage} />
         </div>
         
-        {/* These pages can still use conditional rendering to save performance,
+        {/*pages below can still use conditional rendering to save performance,
            since they don't have persistent audio.
         */}
         {activePage === 'projects' && (
@@ -65,7 +64,7 @@ const App: React.FC = () => {
         )}
       </main>
 
-      {/* Floating Chat Widget available on all pages */}
+      {/* Floating Chat Widget on all pages*/}
       <ChatWidget />
     </div>
   );
