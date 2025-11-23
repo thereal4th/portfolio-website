@@ -4,7 +4,7 @@ import React, { useState, useEffect} from 'react';
 
 import Navigation from '../components/Navigation';
 import About from './About/page';
-import Hero from './Hero/page';
+import Hero from '../components/Hero';
 import Projects from './Projects/page';
 import Contact from './Contact/page';
 import ChatWidget from '../components/Chatwidget'
