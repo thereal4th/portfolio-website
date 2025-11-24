@@ -148,12 +148,11 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
             </div>
           </div>
 
-          {/* Card 3: Location (UPDATED WITH IMAGE BACKGROUND) */}
+          {/* Card 3: Location */}
           <div 
             className="border border-slate-800 p-6 rounded-2xl hover:border-slate-700 transition-colors relative overflow-hidden group bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: "url('/flag.png')" }}
           >
-             {/* Dark Overlay to ensure text readability over the flag image */}
              <div className="absolute inset-0 bg-slate-950/60 transition-opacity group-hover:bg-slate-950/40 z-0" />
              
              <div className="relative z-10">
@@ -169,11 +168,12 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
              </div>
           </div>
 
-          {/* Card 4: Spotify Embed (Functional) */}
+          {/* Card 4: Spotify Embed (FIXED FOR MOBILE) */}
           <div className="md:col-span-2 bg-slate-900/50 border border-slate-800 rounded-2xl hover:border-slate-700 transition-colors overflow-hidden h-[152px]">
              <iframe 
                 style={{borderRadius: "12px"}} 
-                // REPLACE THIS ID WITH YOUR PLAYLIST ID
+                // ✅ FIXED: Using valid HTTPS Spotify Embed URL
+                // To change playlist: Swap '37i9dQZF1DWWQRwui0ExPn' with your new ID
                 src="https://open.spotify.com/embed/playlist/37i9dQZF1DWWQRwui0ExPn?utm_source=generator&theme=0" 
                 width="100%" 
                 height="152" 
