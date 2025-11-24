@@ -127,28 +127,30 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
             </div>
           </div>
 
-          {/* Card 2: SYSTEM STATUS + JOKE */}
-          <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl hover:border-slate-700 transition-colors flex flex-col gap-6">
+          {/* Card 2: SYSTEM STATUS + JOKE (COMPACT VERSION) */}
+          {/* Change 1: Reduced gap from 6 to 4 to tighten height */}
+          <div className="bg-slate-900/50 border border-slate-800 p-5 rounded-2xl hover:border-slate-700 transition-colors flex flex-col gap-4 justify-between">
             
-            {/* Top Half: CREATIVE TERMINAL REPLACEMENT */}
+            {/* Top Half: Terminal Status */}
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-slate-200 font-medium flex items-center gap-2">
-                  <Command size={16} className="text-green-400" /> System Status
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-slate-200 font-medium flex items-center gap-2 text-sm">
+                  <Command size={14} className="text-green-400" /> System Status
                 </h3>
-                <Activity size={16} className="text-green-400 animate-pulse" />
+                <Activity size={14} className="text-green-400 animate-pulse" />
               </div>
               
-              <div className="font-mono text-xs space-y-2 bg-slate-950/50 p-3 rounded-lg border border-slate-800/50">
+              {/* Change 2: Reduced text size to text-[10px] and vertical spacing to space-y-1 */}
+              <div className="font-mono text-[10px] space-y-1 bg-slate-950/50 p-2.5 rounded-lg border border-slate-800/50">
                 <p className="text-slate-400">
                   <span className="text-green-400">➜</span>  ~ whoami
                 </p>
-                <p className="text-white pl-4">Alfredo '4th' V.</p>
+                <p className="text-white pl-3">Alfredo '4th' V.</p>
                 
                 <p className="text-slate-400 mt-2">
                   <span className="text-green-400">➜</span>  ~ current-focus
                 </p>
-                <div className="pl-4 flex flex-col gap-1">
+                <div className="pl-3 flex flex-col">
                    <span className="text-blue-300">▹ Full Stack Dev</span>
                    <span className="text-purple-300">▹ Machine Learning</span>
                 </div>
@@ -156,21 +158,22 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
             </div>
 
             {/* Bottom Half: API Data (The Joke) */}
-            <div className="pt-4 border-t border-slate-800">
+            <div className="pt-3 border-t border-slate-800">
                <div className="flex items-center justify-between mb-2">
-                 <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Funny Module</h3>
+                 <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Funny Module</h3>
                  <button onClick={fetchJoke} disabled={loadingJoke} className="p-1 hover:bg-slate-800 rounded-full transition-colors">
-                    <RefreshCw size={14} className={`text-blue-400 ${loadingJoke ? 'animate-spin' : ''}`} />
+                    <RefreshCw size={12} className={`text-blue-400 ${loadingJoke ? 'animate-spin' : ''}`} />
                  </button>
                </div>
                
-               <div className="text-sm text-slate-300 min-h-[60px]">
+               {/* Change 3: Reduced min-height to ensure Card 1 doesn't stretch too much */}
+               <div className="text-xs text-slate-300 min-h-[45px]">
                  {loadingJoke ? (
                    <span className="text-slate-600 animate-pulse">Fetching joke...</span>
                  ) : joke ? (
                    <>
                     <p className="mb-1">"{joke.setup}"</p>
-                    <p className="text-blue-400 font-medium italic">{joke.punchline}</p>
+                    <p className="text-blue-400 font-medium italic">👉 {joke.punchline}</p>
                    </>
                  ) : (
                    <span className="text-red-400">Failed to load joke.</span>
