@@ -106,7 +106,7 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
       </div>
 
       {/* --- BENTO GRID SECTION --- */}
-      <section className="py-20 px-6 max-w-6xl mx-auto">
+      <section className="py-15 px-6 max-w-6xl mx-auto">
         <h2 className="text-2xl font-bold text-white mb-8 flex items-center gap-2">
           <Terminal size={24} className="text-blue-400" />
           The Nitty Gritty
