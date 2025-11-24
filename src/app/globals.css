@@ -25,9 +25,9 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* --- SCROLLBAR HIDING (Fixed) --- */
+/* hide scrollbar */
 
-/* 1. Target the root elements directly so you don't need to add a class */
+/* 1. Target the root elements directly so no need to add a class */
 html, body {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */

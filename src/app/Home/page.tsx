@@ -173,7 +173,7 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
                  ) : joke ? (
                    <>
                     <p className="mb-1">"{joke.setup}"</p>
-                    <p className="text-blue-400 font-medium italic">👉 {joke.punchline}</p>
+                    <p className="text-blue-400 font-medium italic">{joke.punchline}</p>
                    </>
                  ) : (
                    <span className="text-red-400">Failed to load joke.</span>

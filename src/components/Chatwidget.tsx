@@ -33,7 +33,7 @@ const ChatWidget: React.FC = () => {
         Here is the developer's profile data:
         ${JSON.stringify(PORTFOLIO_DATA)}
   
-        Your goal is to answer visitor questions about Dev's experience, skills, and projects based on this data.
+        Your goal is to answer visitor questions about 4th's experience, skills, and projects based on this data.
         
         Guidelines:
         - Be professional, friendly, and concise (under 3 sentences unless asked for detail).
