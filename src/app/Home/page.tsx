@@ -22,6 +22,7 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
   let isForHire = true;
   let isForHireClassName = isForHire ? "bg-green-400" : "bg-red-400"
   let isForHireText = isForHire ? "Available for hire" : "Not available for hire"
+  let spotifyPlaylistID = "37i9dQZF1DWWQRwui0ExPn"
 
   // --- API STATE ---
   const [joke, setJoke] = useState<JokeData | null>(null);
@@ -196,7 +197,7 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
 
           {/* Card 4: Spotify Embed */}
           <div className="md:col-span-2 bg-slate-900/50 border border-slate-800 rounded-2xl hover:border-slate-700 transition-colors overflow-hidden h-[152px]">
-             <iframe style={{borderRadius: "12px"}} src="https://open.spotify.com/embed/playlist/37i9dQZF1DWWQRwui0ExPn?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowFullScreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" className="opacity-90 hover:opacity-100 transition-opacity block"></iframe>
+             <iframe style={{borderRadius: "12px"}} src={`https://open.spotify.com/embed/playlist/${spotifyPlaylistID}?utm_source=generator&theme=0`} width="100%" height="152" frameBorder="0" allowFullScreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" className="opacity-90 hover:opacity-100 transition-opacity block"></iframe>
           </div>
 
         </div>

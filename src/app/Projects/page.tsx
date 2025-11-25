@@ -28,8 +28,11 @@ const Projects: React.FC = () => {
             {/* Color Hover Effect */}
             <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
             
-            {/* Thumbnail Image Section - Increased to h-72 for a taller look */}
-            <div className="relative h-72 h-full w-full overflow-hidden border-b border-slate-700/50">
+            {/* THUMBNAIL SIZE FIX:
+               Changed h-72 (18rem) -> h-48 (12rem). 
+               Kept 'shrink-0' so it doesn't squish.
+            */}
+            <div className="relative h-48 w-full shrink-0 overflow-hidden border-b border-slate-700/50">
               <img 
                 src={project.thumbnail} 
                 alt={project.title}
@@ -42,18 +45,15 @@ const Projects: React.FC = () => {
               </div>
             </div>
 
-            {/* Content Section - Compacted padding to p-5 to balance the taller image */}
-            <div className="relative z-10 flex flex-col h-full p-5">
+            <div className="relative z-10 flex flex-col flex-1 p-5">
               <h3 className="text-xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors">
                 {project.title}
               </h3>
               
-              {/* Added line-clamp-3 to prevent card from growing too tall with long text */}
               <p className="text-slate-400 text-sm leading-relaxed flex-grow line-clamp-3 mb-8">
                 {project.description}
               </p>
               
-              {/* Separation Line - Reduced margins to my-3 */}
               <div className="h-px w-full bg-slate-700/50 my-8" />
 
               <div className="flex flex-wrap gap-2 mb-4">

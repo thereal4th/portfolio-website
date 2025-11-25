@@ -40,30 +40,30 @@ const PORTFOLIO_DATA: PortfolioData = {
   ],
   projects: [
     {
-      title: "E-Commerce Dashboard",
+      title: "JobMatch.AI",
       thumbnail: "/image.png",
-      description: "A comprehensive dashboard for online retailers with real-time analytics, inventory management, and order processing capabilities.",
-      tags: ["Next.js", "Tailwind", "PostgreSQL", "Prisma"],
+      description: "A simple web application that matches the user's resume to a json list of scraped jobs on the web. The app computes for the cosine similarity of the resume and job listings including their title and description, deployed on the Google cloud platform, the scraper updates the json list weekly.",
+      tags: ["Next.js", "PyTorch", "FastAPI", "Docker", "Google Cloud Platform"],
       iconType: "Database",
       color: "from-blue-500/20 to-cyan-500/20",
-      github: "#",
-      demo: "#"
+      github: "https://github.com/mercadoCODING/training-arc",
+      demo: "https://jobmatcherai.netlify.app"
     },
     {
-      title: "AI Content Generator",
-      thumbnail: "/image.png",
-      description: "SaaS application utilizing OpenAI's API to help marketers generate SEO-optimized blog posts and social media captions.",
-      tags: ["React", "Node.js", "OpenAI API", "Stripe"],
+      title: "Melanoma Classifier Mobile App",
+      thumbnail: "/melanoma.png",
+      description: "Mobile application that utilizes UNET segmentation and Convolutional Neural Networks to classifiy melanoma.",
+      tags: ["React Native", "Express.js", "PyTorch", "FastAPI", "Supabase", "PostgreSQL"],
       iconType: "Cpu",
       color: "from-purple-500/20 to-pink-500/20",
-      github: "#",
-      demo: "#"
+      github: "https://github.com/thereal4th/Melanoma-Classification-Mobile-Application-complete-codebase-",
+      demo: "https://drive.google.com/drive/folders/11qXqkxqIQx2SAvxU1_Ael771kvplCXPn?usp=sharing"
     },
     {
-      title: "Global Travel App",
+      title: "Property Management System",
       thumbnail: "/image.png",
-      description: "Interactive travel companion app featuring offline maps, itinerary planning, and local recommendations.",
-      tags: ["React Native", "Firebase", "Google Maps"],
+      description: "A CI/CD enabled, property management system (work in progress)",
+      tags: ["Next.js", "Express.js", "Github Actions", "PostgreSQL"],
       iconType: "Globe",
       color: "from-green-500/20 to-emerald-500/20",
       github: "#",
