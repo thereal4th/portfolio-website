@@ -152,8 +152,8 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
                   <span className="text-green-400">➜</span>  ~ current-focus
                 </p>
                 <div className="pl-3 flex flex-col">
-                   <span className="text-blue-300">▹ Full Stack Dev</span>
-                   <span className="text-purple-300">▹ Machine Learning</span>
+                   <span className="text-blue-300">▹ CI/CD</span>
+                   <span className="text-purple-300">▹ DevOps</span>
                 </div>
               </div>
             </div>
