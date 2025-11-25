@@ -64,7 +64,7 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
             <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-slate-900 bg-slate-800">
               <img
-                src={`https://api.dicebear.com/7.x/notionists/svg?seed=${PORTFOLIO_DATA.nickname}&backgroundColor=b6e3f4`}
+                src={`/myprofile.png`}
                 alt="Profile"
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
