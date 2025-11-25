@@ -68,6 +68,17 @@ const PORTFOLIO_DATA: PortfolioData = {
       color: "from-green-500/20 to-emerald-500/20",
       github: "#",
       demo: "#"
+    },
+
+    {
+      title: "Casa De Margarita Landing Page",
+      thumbnail: "/casa de margarita.png",
+      description: "One of the first websites I developed in 2022 using only vanilla Javascript, HTML, and CSS. Developed for a pool and events place Casa De Margarita.",
+      tags: ["Javascript", "CSS", "HTML"],
+      iconType: "Globe",
+      color: "from-green-500/20 to-emerald-500/20",
+      github: "https://github.com/thereal4th/Casa-De-Margarita",
+      demo: "https://casademargarita.netlify.app"
     }
   ],
   experience: [
