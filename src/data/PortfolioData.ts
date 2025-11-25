@@ -61,7 +61,7 @@ const PORTFOLIO_DATA: PortfolioData = {
     },
     {
       title: "Property Management System",
-      thumbnail: "/image.png",
+      thumbnail: "/property manager.png",
       description: "A CI/CD enabled, property management system (work in progress)",
       tags: ["Next.js", "Express.js", "Github Actions", "Supabase"],
       iconType: "Globe",
