@@ -5,7 +5,7 @@ import { Bot, Loader2, MessageSquare, Send, X } from "lucide-react";
 const ChatWidget: React.FC = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [messages, setMessages] = useState<Message[]>([
-      { role: 'assistant', text: "Hi! I'm Dev's AI Assistant. Ask me anything about his skills, experience, or projects!" }
+      { role: 'assistant', text: "Hi! I'm Jarvis, 4th's AI Assistant. Ask me anything about his skills, experience, or projects!" }
     ]);
     const [inputValue, setInputValue] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -60,7 +60,7 @@ const ChatWidget: React.FC = () => {
                   <Bot size={18} />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-white">Ask DevBot</h3>
+                  <h3 className="text-sm font-bold text-white">Ask Jarvis</h3>
                   <div className="flex items-center gap-1">
                     <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
                     <span className="text-xs text-slate-400">Online</span>
