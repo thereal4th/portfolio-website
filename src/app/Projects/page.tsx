@@ -68,9 +68,11 @@ const Projects: React.FC = () => {
                 <a href={project.github} target="_blank" className="flex items-center gap-2 text-sm font-medium text-white hover:text-blue-400 transition-colors">
                   <GithubIcon size={16} /> Code
                 </a>
-                <a href={project.demo} target="_blank" className="flex items-center gap-2 text-sm font-medium text-white hover:text-blue-400 transition-colors">
-                  <ExternalLink size={16} /> Demo
-                </a>
+                {project.demo && (
+                    <a href={project.demo} target="_blank" className="flex items-center gap-2 text-sm font-medium text-white hover:text-blue-400 transition-colors">
+                    <ExternalLink size={16} /> Demo
+                  </a>
+                )}
               </div>
             </div>
           </div>

@@ -67,7 +67,6 @@ const PORTFOLIO_DATA: PortfolioData = {
       iconType: "Globe",
       color: "from-green-500/20 to-emerald-500/20",
       github: "#",
-      demo: "#"
     },
 
     {
@@ -79,6 +78,16 @@ const PORTFOLIO_DATA: PortfolioData = {
       color: "from-green-500/20 to-emerald-500/20",
       github: "https://github.com/thereal4th/Casa-De-Margarita",
       demo: "https://casademargarita.netlify.app"
+    },
+
+    {
+      title: "FashionMNIST Multiclass Classifier",
+      thumbnail: "/fashionmnist.png",
+      description: "OLD LEARNING PROJECT: Developed a wardrobe item classifier using the FashionMNIST dataset, PyTorch, and Matplotlib for visualization.",
+      tags: ["Javascript", "CSS", "HTML"],
+      iconType: "Cpu",
+      color: "from-green-500/20 to-emerald-500/20",
+      github: "https://github.com/thereal4th/FashionMNIST-multi-classifier.git"
     }
   ],
   experience: [
