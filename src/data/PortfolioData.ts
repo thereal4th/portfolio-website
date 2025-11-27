@@ -84,7 +84,7 @@ const PORTFOLIO_DATA: PortfolioData = {
       title: "FashionMNIST Multiclass Classifier",
       thumbnail: "/fashionmnist.png",
       description: "OLD LEARNING PROJECT: Developed a wardrobe item classifier using the FashionMNIST dataset, PyTorch, and Matplotlib for visualization.",
-      tags: ["Javascript", "CSS", "HTML"],
+      tags: ["PyTorch", "Jupyter", "Matplotlib"],
       iconType: "Cpu",
       color: "from-green-500/20 to-emerald-500/20",
       github: "https://github.com/thereal4th/FashionMNIST-multi-classifier.git"
