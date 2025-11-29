@@ -75,7 +75,7 @@ const PORTFOLIO_DATA: PortfolioData = {
       description: "One of the first websites I developed in 2022 using only vanilla Javascript, HTML, and CSS. Developed for a pool and events place Casa De Margarita.",
       tags: ["Javascript", "CSS", "HTML"],
       iconType: "Globe",
-      color: "from-green-500/20 to-emerald-500/20",
+      color: "from-blue-500/20 to-cyan-500/20",
       github: "https://github.com/thereal4th/Casa-De-Margarita",
       demo: "https://casademargarita.netlify.app"
     },
@@ -86,7 +86,7 @@ const PORTFOLIO_DATA: PortfolioData = {
       description: "OLD LEARNING PROJECT: Developed a wardrobe item classifier using the FashionMNIST dataset, PyTorch, and Matplotlib for visualization.",
       tags: ["PyTorch", "Jupyter", "Matplotlib"],
       iconType: "Cpu",
-      color: "from-green-500/20 to-emerald-500/20",
+      color: "from-purple-500/20 to-pink-500/20",
       github: "https://github.com/thereal4th/FashionMNIST-multi-classifier.git"
     }
   ],
