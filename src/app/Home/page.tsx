@@ -22,7 +22,7 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
   let isForHire = true;
   let isForHireClassName = isForHire ? "bg-green-400" : "bg-red-400"
   let isForHireText = isForHire ? "Available for hire" : "Not available for hire"
-  let spotifyPlaylistID = "37i9dQZF1DWWQRwui0ExPn"
+  let spotifyPlaylistID = "1ZqjTHeh9l4jz0KavDju8o"
 
   // --- API STATE ---
   const [joke, setJoke] = useState<JokeData | null>(null);
