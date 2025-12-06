@@ -26,20 +26,40 @@ const ChatWidget: React.FC = () => {
       setInputValue('');
       setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
       setIsLoading(true);
+
+      const generateContent = async (userMsg: string, systemPrompt: string) => {
+
+        // send request to backend api route
+        const res = await fetch('../api/generate', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({ userMsg, systemPrompt })
+        })
+
+        const data = await res.json()
+        return data.text;
+        
+      }
   
       const systemPrompt = `
         You are an AI assistant for a portfolio website of a Full Stack Developer named "${PORTFOLIO_DATA.name}".
         
         Here is the developer's profile data:
         ${JSON.stringify(PORTFOLIO_DATA)}
+
+        developer's hobbies: BJJ, MMA, gaming, fitness, technology, piano, jazz.
   
         Your goal is to answer visitor questions about 4th's experience, skills, and projects based on this data.
         
         Guidelines:
         - Be professional, friendly, and concise (under 3 sentences unless asked for detail).
         - If asked about contact, direct them to the contact section or form.
-        - If asked about skills not listed, honest say they aren't listed but suggest related skills if applicable.
+        - If asked about skills not listed, be honest and say they aren't listed but suggest related skills if applicable.
         - Act as an enthusiastic agent representing the developer.
+        - Do not entertain questions not related to the developer or his projects.
       `;
   
       const aiResponse = await generateContent(userMsg, systemPrompt);
