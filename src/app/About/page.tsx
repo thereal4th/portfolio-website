@@ -15,11 +15,7 @@ const About: React.FC = () => {
           <p className = "text-justify">
             I code for my own enjoyment. I love the process of creation and problem-solving. Apart from coding, I've been playing the piano for 10 years, and I'm also a dedicated practioner of the martial art BJJ.
           </p>
-          <p className = "text-justify">
-            If you're interested in the non-technical stuff about me, you can ask my AI assistant in the bottom-right corner :)
-          </p>
         </div>
-
         <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-8 backdrop-blur-sm">
           <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
             <Terminal size={20} className="text-blue-400" />
