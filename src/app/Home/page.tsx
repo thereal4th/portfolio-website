@@ -85,7 +85,21 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
           </div>
 
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
-            Hi, I'm {PORTFOLIO_DATA.name}. <br />
+            Hi, I'm{' '}
+            {/* animation wrapper*/}
+            <span className="group relative inline-block overflow-hidden align-bottom cursor-pointer">
+              
+              {/*(Slides Up) */}
+              <span className="block transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:-translate-y-full">
+                {PORTFOLIO_DATA.name}.
+              </span>
+
+              {/* 2. Hover Text (Slides In) - Inherits font, overrides color */}
+              <span className="absolute top-0 left-0 block w-full text-blue-400 transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] translate-y-full group-hover:translate-y-0">
+                4th.
+              </span>
+            </span>
+            
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-3xl md:text-5xl block mt-2">
               {PORTFOLIO_DATA.role}
             </span>
