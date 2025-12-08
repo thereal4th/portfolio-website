@@ -38,7 +38,7 @@ export async function POST(req: Request) {
         // data.candidates[0].content.parts[0].text
         const text =
             data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-            "No response";
+            "Usage has exceeded the limit, sorry!";
 
         return NextResponse.json({ text });
 
