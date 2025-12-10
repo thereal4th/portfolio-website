@@ -35,7 +35,7 @@ const PORTFOLIO_DATA: PortfolioData = {
   bio: "I love to create, design, and solve problems. Coding is an outlet for me to do what I love.",
   skills: [
     "Next.js", "React.js", "Node.js", "Express.js",
-    "MongoDB", "PostgreSQL", "FastAPI", "Django",
+    "MongoDB", "PostgreSQL", "FastAPI", "Docker",
     "PyTorch", "Jupyter", "TypeScript", "Tailwind CSS"
   ],
   projects: [

@@ -5,6 +5,7 @@ import { GithubIcon, LinkedinIcon } from "@/src/components/ui/CustomIcons";
 import PORTFOLIO_DATA from "@/src/data/PortfolioData";
 import { ChevronRight, Mail, Globe, ExternalLink, Terminal, RefreshCw, Command, Activity } from "lucide-react";
 import { GitHubCalendar } from 'react-github-calendar';
+import TechStack from '@/src/components/TechStack';
 
 type Page = 'home' | 'projects' | 'about' | 'contact';
 
@@ -122,6 +123,9 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
 
       {/* --- BENTO GRID SECTION --- */}
       <section className="py-15 px-6 max-w-6xl mx-auto">
+        
+        {/*<TechStack/>*/}
+
         <h2 className="text-2xl font-bold text-white mb-8 flex items-center gap-2">
           <Terminal size={24} className="text-blue-400" />
           The Nitty Gritty
