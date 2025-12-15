@@ -93,7 +93,8 @@ const PORTFOLIO_DATA: PortfolioData = {
   experience: [
     { year: "2024", role: "Machine Learning Engineer", company: "Techstack", desc: "Developed the deep learning model and classification pipeline for our Thesis project." },
     { year: "2023", role: "Front End Developer", company: "Casa De Margarita", desc: "Developed a simple vanila javascript, html, and css landing page for Casa De Margarita, a pool and events place." },
-    { year: "2022", role: "Programming Hobbyist", company: "", desc: "This was when I took up programming courses and started developing mini console projects." }
+    { year: "2022", role: "Programming Hobbyist", company: "", desc: "This was when I took up programming courses and started developing mini console projects." },
+    { year: "2025", role: "Software Engineer Intern", company: "GlbalTek BPO INC.", desc: "Started a paid internship as a software engineer intern focusing on full stack web development with React, Next, and AWS."}
   ]
 };
 
