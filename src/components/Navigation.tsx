@@ -21,12 +21,12 @@ interface NavigationProps {
     ];
   
     return (
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-slate-900/90 backdrop-blur-md border-b border-slate-800 py-4' : 'bg-transparent py-6'
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        isScrolled ? 'bg-[#FDFBF7]/80 backdrop-blur-2xl border-b border-[#E6E1D6] py-4 shadow-[0_4px_30px_rgba(0,0,0,0.03)]' : 'bg-transparent py-6'
       }`}>
         <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
           <div 
-            className="font-bold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 cursor-pointer"
+            className="font-bold text-2xl text-[#3F5E46] cursor-pointer"
             onClick={() => setActivePage('home')}
           >
             {PORTFOLIO_DATA.nickname}.
@@ -38,8 +38,8 @@ interface NavigationProps {
               <button
                 key={link.id}
                 onClick={() => setActivePage(link.id)}
-                className={`text-sm font-medium transition-colors duration-300 hover:text-blue-400 ${
-                  activePage === link.id ? 'text-blue-400' : 'text-slate-400'
+                className={`text-sm font-medium transition-colors duration-300 hover:text-[#3F5E46] ${
+                  activePage === link.id ? 'text-[#3F5E46]' : 'text-[#2C3529]/60'
                 }`}
               >
                 {link.label}
@@ -49,7 +49,7 @@ interface NavigationProps {
   
           {/* Mobile Menu Button */}
           <button 
-            className="md:hidden text-slate-300 hover:text-white"
+            className="md:hidden text-[#2C3529]/80 hover:text-[#3F5E46]"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -57,7 +57,7 @@ interface NavigationProps {
   
           {/* Mobile Nav */}
           {isMobileMenuOpen && (
-            <div className="absolute top-full left-0 right-0 bg-slate-900 border-b border-slate-800 p-6 md:hidden flex flex-col space-y-4 animate-in slide-in-from-top-5 duration-200">
+            <div className="absolute top-full left-0 right-0 bg-[#FDFBF7]/95 backdrop-blur-2xl border-b border-[#E6E1D6] p-6 md:hidden flex flex-col space-y-4 animate-in slide-in-from-top-5 duration-300 shadow-xl">
               {navLinks.map((link) => (
                 <button
                   key={link.id}
@@ -66,7 +66,7 @@ interface NavigationProps {
                     setIsMobileMenuOpen(false);
                   }}
                   className={`text-left text-lg font-medium ${
-                    activePage === link.id ? 'text-blue-400' : 'text-slate-400'
+                    activePage === link.id ? 'text-[#3F5E46]' : 'text-[#2C3529]/70'
                   }`}
                 >
                   {link.label}

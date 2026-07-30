@@ -4,28 +4,28 @@ import { Terminal } from "lucide-react";
 const About: React.FC = () => {
   return (
     <div className="min-h-screen pt-32 pb-20 px-6 max-w-4xl mx-auto">
-      <h2 className="text-3xl md:text-5xl font-bold text-white mb-12">About Me</h2>
+      <h2 className="text-3xl md:text-5xl font-bold text-[#2C3529] mb-12">About Me</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-        <div className="space-y-6 text-slate-400 text-lg leading-relaxed">
-          <p className = "text-justify">
-            Hello! I'm <span className = "text-white">{PORTFOLIO_DATA.name}</span>, but you can call me <span className="text-blue-400 font-bold">{PORTFOLIO_DATA.nickname}</span>. 
-            I am a <span className = "text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">{PORTFOLIO_DATA.role}</span>.
+        <div className="space-y-6 text-[#2C3529]/80 text-lg leading-relaxed font-light">
+          <p className="text-justify">
+            Hello! I'm <span className="text-[#2C3529] font-medium">{PORTFOLIO_DATA.name}</span>, but you can call me <span className="text-[#3F5E46] font-bold">{PORTFOLIO_DATA.nickname}</span>. 
+            I am a <span className="text-[#C26344] font-medium">{PORTFOLIO_DATA.role}</span>.
           </p>
-          <p className = "text-justify">
-            I code for my own enjoyment. I love the process of creation and problem-solving. Apart from coding, I've been playing the piano for 10 years, and I'm also a dedicated practioner of the martial art BJJ.
+          <p className="text-justify">
+            I code for my own enjoyment. I love the process of creation and problem-solving. Apart from coding, I've been playing the piano for 10 years, and I'm also a dedicated practitioner of the martial art BJJ.
           </p>
         </div>
-        <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-8 backdrop-blur-sm">
-          <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-            <Terminal size={20} className="text-blue-400" />
+        <div className="organic-card p-8">
+          <h3 className="text-xl font-bold text-[#2C3529] mb-6 flex items-center gap-2">
+            <Terminal size={20} className="text-[#3F5E46]" />
             Technical Skills
           </h3>
           <div className="flex flex-wrap gap-2">
             {PORTFOLIO_DATA.skills.map((skill, index) => (
               <span 
                 key={index}
-                className="px-3 py-1.5 bg-slate-700/50 text-slate-300 rounded-lg text-sm border border-slate-600 hover:border-blue-500 hover:text-blue-400 transition-colors cursor-default"
+                className="px-4 py-2 bg-[#F4F0EA] text-[#3F5E46] rounded-full text-sm font-medium border border-[#E6E1D6] hover:border-[#3F5E46]/50 hover:bg-white hover:shadow-sm transition-all cursor-default"
               >
                 {skill}
               </span>
@@ -34,16 +34,16 @@ const About: React.FC = () => {
         </div>
       </div>
 
-      <div className="mt-20">
-        <h3 className="text-2xl font-bold text-white mb-8">Experience</h3>
-        <div className="space-y-8">
+      <div className="mt-24">
+        <h3 className="text-2xl font-bold text-[#2C3529] mb-10">Experience</h3>
+        <div className="space-y-10">
           {PORTFOLIO_DATA.experience.map((item, index) => (
-            <div key={index} className="relative pl-8 border-l border-slate-800 pb-8 last:pb-0">
-              <div className="absolute left-[-5px] top-0 w-2.5 h-2.5 rounded-full bg-blue-500" />
-              <div className="text-sm text-blue-400 mb-1">{item.year}</div>
-              <h4 className="text-xl font-bold text-white mb-2">{item.role}</h4>
-              <div className="text-slate-500 mb-4">{item.company}</div>
-              <p className="text-slate-400">
+            <div key={index} className="relative pl-10 border-l-2 border-[#E6E1D6] pb-2 last:pb-0 group">
+              <div className="absolute left-[-7px] top-1.5 w-3 h-3 rounded-full bg-[#C26344] shadow-sm group-hover:scale-150 group-hover:bg-[#3F5E46] transition-all duration-300" />
+              <div className="text-sm font-bold tracking-wider text-[#C26344] uppercase mb-2">{item.year}</div>
+              <h4 className="text-xl font-bold text-[#2C3529] mb-1">{item.role}</h4>
+              <div className="text-[#3F5E46] font-medium mb-4">{item.company}</div>
+              <p className="text-[#2C3529]/70 leading-relaxed font-light">
                 {item.desc}
               </p>
             </div>

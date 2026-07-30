@@ -67,7 +67,7 @@ const PORTFOLIO_DATA: PortfolioData = {
       iconType: "Globe",
       color: "from-green-500/20 to-emerald-500/20",
       github: "#",
-    },
+    },  
 
     {
       title: "Casa De Margarita Landing Page",
