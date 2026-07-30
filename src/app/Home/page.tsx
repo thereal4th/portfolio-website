@@ -3,7 +3,8 @@
 import { GithubIcon, LinkedinIcon } from "@/src/components/ui/CustomIcons";
 import PORTFOLIO_DATA from "@/src/data/PortfolioData";
 import { ArrowRight, Mail } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import MagneticElement from "@/src/components/MagneticElement";
 
 type Page = 'home' | 'projects' | 'about' | 'contact';
 
@@ -11,23 +12,45 @@ interface HeroProps {
   setActivePage: (page: Page) => void;
 }
 
+const LetterPullUp = ({ text, delay = 0 }: { text: string, delay?: number }) => {
+  const letters = text.split("");
+  return (
+    <div className="flex">
+      {letters.map((letter, i) => (
+        <motion.span
+          key={i}
+          initial={{ y: 100, opacity: 0, rotate: 20 }}
+          animate={{ y: 0, opacity: 1, rotate: 0 }}
+          transition={{
+            type: "spring",
+            damping: 12,
+            stiffness: 200,
+            delay: delay + i * 0.05,
+          }}
+          className="inline-block"
+        >
+          {letter === " " ? "\u00A0" : letter}
+        </motion.span>
+      ))}
+    </div>
+  );
+};
+
 const Home: React.FC<HeroProps> = ({ setActivePage }) => {
+  const { scrollYProgress } = useScroll();
+  const marqueeX = useTransform(scrollYProgress, [0, 1], [0, -2000]);
+  
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
-      transition: { staggerChildren: 0.2, delayChildren: 0.1 }
+      transition: { staggerChildren: 0.2, delayChildren: 0.3 }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
-    show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-  };
-
-  const textRevealVariants = {
-    hidden: { opacity: 0, y: 50 },
-    show: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } }
+    hidden: { opacity: 0, y: 50, filter: "blur(20px)", scale: 0.8 },
+    show: { opacity: 1, y: 0, filter: "blur(0px)", scale: 1, transition: { type: "spring", damping: 20, stiffness: 100 } }
   };
 
   return (
@@ -35,78 +58,54 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
       variants={containerVariants}
       initial="hidden"
       animate="show"
-      className="min-h-[85vh] flex flex-col justify-center max-w-6xl mx-auto px-6 lg:px-12 relative z-10"
+      className="min-h-screen flex flex-col justify-center relative z-10 pt-20"
     >
-      
-      {/* Top Elements: Profile & Tag */}
-      <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-center gap-6 mb-10">
-        
-        {/* Profile Photo */}
-        <div className="relative group cursor-default inline-block">
-          <div className="absolute -inset-2 bg-gradient-to-r from-white/20 to-white/5 rounded-full blur-xl opacity-60 group-hover:opacity-100 group-hover:blur-2xl transition-all duration-700"></div>
-          <div className="relative w-24 h-24 rounded-full overflow-hidden border border-white/20 bg-[#030303] shadow-[0_0_30px_rgba(255,255,255,0.1)]">
-            <img
-              src={`/myprofile.png`}
-              alt="Profile"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100"
-            />
+      <div className="max-w-6xl mx-auto px-6 lg:px-12 w-full">
+        {/* Massive Typography Hero */}
+        <div className="relative py-2 flex flex-col gap-2">
+          <div className="text-5xl md:text-7xl lg:text-[8rem] font-black tracking-tighter leading-[0.85] text-gray-900 dark:text-white">
+            <LetterPullUp text={PORTFOLIO_DATA.name.split(' ')[0]} delay={0.2} />
+          </div>
+          <div className="text-5xl md:text-7xl lg:text-[8rem] font-black tracking-tighter leading-[0.85] text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 dark:from-cyan-400 dark:via-fuchsia-500 dark:to-yellow-400 dark:animate-pulse">
+            <LetterPullUp text={PORTFOLIO_DATA.name.split(' ')[1] || PORTFOLIO_DATA.role} delay={0.6} />
           </div>
         </div>
 
-        {/* Status Tag */}
-        <div className="flex items-center gap-2 px-4 py-2 rounded-full spatial-card w-fit">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-xs font-bold tracking-widest text-white/70 uppercase">Available for new opportunities</span>
-        </div>
-      </motion.div>
-
-      {/* Massive Typography Hero */}
-      <div className="relative overflow-hidden py-2">
-        <motion.h1 variants={textRevealVariants} className="text-5xl md:text-7xl lg:text-[7rem] font-extrabold tracking-tighter leading-[0.9] text-white">
-          <span className="block opacity-90">{PORTFOLIO_DATA.name.split(' ')[0]}</span>
-          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-white/90 via-white/50 to-white/20">
-            {PORTFOLIO_DATA.name.split(' ')[1] || PORTFOLIO_DATA.role}
-          </span>
-        </motion.h1>
+        {/* Description & CTA */}
+        <motion.div variants={itemVariants} className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-2 gap-10 items-end">
+          <p className="text-xl md:text-3xl text-gray-500 dark:text-white/70 font-light leading-relaxed max-w-lg">
+            I build <strong className="text-gray-900 dark:text-white font-black dark:text-glow-intense">immersive digital experiences</strong>.
+            <br className="hidden md:block" /> {PORTFOLIO_DATA.bio}
+          </p>
+          
+          <div className="flex flex-col sm:flex-row items-center md:justify-end gap-8">
+            <div className="flex items-center gap-6 text-gray-400 dark:text-white/50">
+              <MagneticElement><a href="https://github.com/thereal4th" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 dark:hover:text-cyan-400 dark:hover:drop-shadow-[0_0_20px_rgba(0,255,255,0.8)] transition-all block p-2"><GithubIcon className="w-8 h-8" /></a></MagneticElement>
+              <MagneticElement><a href="https://linkedin.com/in/alfredo-venturina-0475b532a" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-600 dark:hover:text-fuchsia-400 dark:hover:drop-shadow-[0_0_20px_rgba(255,0,255,0.8)] transition-all block p-2"><LinkedinIcon className="w-8 h-8" /></a></MagneticElement>
+              <MagneticElement><a href="https://mail.google.com/mail/?view=cm&fs=1&to=alfredoventurina@gmail.com" target="_blank" rel="noopener noreferrer" className="hover:text-violet-600 dark:hover:text-yellow-400 dark:hover:drop-shadow-[0_0_20px_rgba(255,255,0,0.8)] transition-all block p-2"><Mail className="w-8 h-8" /></a></MagneticElement>
+            </div>
+            
+            <MagneticElement>
+              <button 
+                onClick={() => setActivePage('projects')}
+                className="group flex items-center gap-3 px-10 py-5 bg-gray-900 dark:bg-white text-white dark:text-black rounded-full font-black text-xl shadow-[0_10px_30px_rgba(0,0,0,0.15)] dark:shadow-[0_0_60px_rgba(255,255,255,0.6)] hover:bg-black dark:hover:bg-black dark:hover:text-white dark:hover:border dark:hover:border-white hover:scale-105 transition-all"
+              >
+                EXPLORE WORK
+                <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+              </button>
+            </MagneticElement>
+          </div>
+        </motion.div>
       </div>
 
-      {/* Description & CTA */}
-      <motion.div variants={itemVariants} className="mt-12 md:mt-20 grid grid-cols-1 md:grid-cols-2 gap-10 items-end">
-        <p className="text-xl md:text-2xl text-white/50 font-light leading-relaxed max-w-lg">
-          I build <strong className="text-white font-medium">immersive digital experiences</strong>.
-          <br className="hidden md:block" /> {PORTFOLIO_DATA.bio}
-        </p>
-        
-        <div className="flex flex-col sm:flex-row items-center md:justify-end gap-6">
-          <div className="flex items-center gap-5 text-white/40">
-            <motion.a whileHover={{ scale: 1.2, rotate: 5 }} href="https://github.com/thereal4th" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors"><GithubIcon className="w-6 h-6" /></motion.a>
-            <motion.a whileHover={{ scale: 1.2, rotate: -5 }} href="https://linkedin.com/in/alfredo-venturina-0475b532a" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors"><LinkedinIcon className="w-6 h-6" /></motion.a>
-            <motion.a whileHover={{ scale: 1.2, rotate: 5 }} href="https://mail.google.com/mail/?view=cm&fs=1&to=alfredoventurina@gmail.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors"><Mail className="w-6 h-6" /></motion.a>
-          </div>
-          
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setActivePage('projects')}
-            className="group flex items-center gap-3 px-8 py-4 bg-white text-black rounded-full font-bold text-lg shadow-[0_0_40px_rgba(255,255,255,0.3)]"
-          >
-            Explore Work
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </motion.button>
-        </div>
-      </motion.div>
-
-      {/* Abstract Design Element */}
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 0.5, scale: 1 }}
-        transition={{ duration: 2, ease: "easeOut" }}
-        className="absolute right-[5%] top-[10%] w-64 h-64 md:w-96 md:h-96 pointer-events-none mix-blend-screen animate-ambient-1"
-      >
-        <div className="absolute inset-0 rounded-full border border-white/20 animate-[spin_20s_linear_infinite]" />
-        <div className="absolute inset-4 rounded-full border border-white/10 animate-[spin_30s_linear_infinite_reverse]" />
-        <div className="absolute inset-12 rounded-full border border-white/5 animate-[spin_40s_linear_infinite]" />
-      </motion.div>
+      {/* Massive Scroll Marquee */}
+      <div className="mt-32 pb-10 overflow-hidden w-full select-none pointer-events-none border-y border-gray-200 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-md">
+        <motion.div style={{ x: marqueeX }} className="flex whitespace-nowrap">
+          <h2 className="text-[15vw] font-black tracking-tighter uppercase leading-none text-transparent bg-clip-text bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-violet-600/10 dark:from-cyan-500/50 dark:via-fuchsia-500/50 dark:to-yellow-500/50">
+            {PORTFOLIO_DATA.role} — DIGITAL ALCHEMIST — {PORTFOLIO_DATA.role} —
+          </h2>
+        </motion.div>
+      </div>
       
     </motion.div>
   )

@@ -1,21 +1,28 @@
 @import "tailwindcss";
 
+@variant dark (&:is(.dark *));
+
 @theme inline {
-  --color-background: #030303;
-  --color-foreground: #FAFAFA;
+  --color-background: #F9FAFB;
+  --color-foreground: #111827;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 body {
-  background-color: #030303;
-  color: #FAFAFA;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
   font-family: var(--font-sans), Arial, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  cursor: none;
 }
 
-/* Hide Scrollbar */
+.dark body {
+  --color-background: #000000;
+  --color-foreground: #ffffff;
+}
+
 ::-webkit-scrollbar {
   display: none;
 }
@@ -24,45 +31,92 @@ body {
   scrollbar-width: none;
 }
 
-/* Base Utilities */
 @layer utilities {
-  .text-glow {
-    text-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
+  .text-glow-intense {
+    text-shadow: 0 0 20px rgba(79, 70, 229, 0.2), 0 0 60px rgba(79, 70, 229, 0.1);
+  }
+  .dark .text-glow-intense {
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.6);
+  }
+  .bg-conic-glow {
+    background: conic-gradient(from var(--border-angle), #ff00ff, #00ffff, #ff00ff);
+    animation: border-spin 4s linear infinite;
   }
 }
 
-/* Spatial UI Cards */
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0turn;
+}
+
+@keyframes border-spin {
+  to {
+    --border-angle: 1turn;
+  }
+}
+
 .spatial-card {
-  @apply bg-white/[0.02] border border-white/[0.05] backdrop-blur-[40px] shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] rounded-[32px];
+  @apply relative bg-white/70 backdrop-blur-3xl rounded-[32px] overflow-hidden border border-gray-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)];
+}
+.dark .spatial-card {
+  @apply bg-black/40 border-0 shadow-none;
+}
+.dark .spatial-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 32px;
+  padding: 2px;
+  background: conic-gradient(from var(--border-angle), rgba(255, 0, 255, 0.5), rgba(0, 255, 255, 0.5), rgba(255, 0, 255, 0.5));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: border-spin 4s linear infinite;
+  pointer-events: none;
 }
 
 .spatial-card-hover {
-  @apply hover:bg-white/[0.04] hover:border-white/[0.1] hover:-translate-y-1 hover:shadow-[0_16px_48px_0_rgba(0,0,0,0.6)] transition-all duration-500 ease-out;
+  @apply hover:-translate-y-2 hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-out;
+}
+.dark .spatial-card-hover {
+  @apply hover:shadow-[0_20px_80px_0_rgba(0,255,255,0.4)];
 }
 
-/* Ambient Animations */
 @keyframes ambient-drift {
   0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-  33% { transform: translate(3vw, -4vh) scale(1.1) rotate(5deg); }
-  66% { transform: translate(-2vw, 3vh) scale(0.9) rotate(-2deg); }
+  33% { transform: translate(10vw, -10vh) scale(1.1) rotate(5deg); }
+  66% { transform: translate(-10vw, 10vh) scale(0.9) rotate(-5deg); }
   100% { transform: translate(0, 0) scale(1) rotate(0deg); }
 }
 
 .animate-ambient-1 {
-  animation: ambient-drift 20s ease-in-out infinite;
+  animation: ambient-drift 15s ease-in-out infinite;
 }
 .animate-ambient-2 {
-  animation: ambient-drift 25s ease-in-out infinite reverse;
+  animation: ambient-drift 20s ease-in-out infinite reverse;
 }
 .animate-ambient-3 {
-  animation: ambient-drift 30s ease-in-out infinite;
-  animation-delay: -10s;
+  animation: ambient-drift 25s ease-in-out infinite;
+  animation-delay: -5s;
 }
 
-@keyframes float-gentle {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+.bg-perspective-grid {
+  background-size: 100px 100px;
+  background-image: 
+    linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px);
+  transform: perspective(1000px) rotateX(60deg) scale(2.5) translateY(-200px);
+  transform-origin: top;
+  animation: grid-move 5s linear infinite;
 }
-.animate-float-gentle {
-  animation: float-gentle 6s ease-in-out infinite;
+.dark .bg-perspective-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+}
+
+@keyframes grid-move {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100px; }
 }
