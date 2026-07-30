@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Navigation from '../components/Navigation';
 import About from './About/page';
@@ -9,20 +9,18 @@ import Projects from './Projects/page';
 import Contact from './Contact/page';
 import ChatWidget from '../components/Chatwidget';
 
-// --- TYPES ---
-
 type Page = 'home' | 'projects' | 'about' | 'contact';
 
 const App: React.FC = () => {
   const [activePage, setActivePage] = useState<Page>('home');
-  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   useEffect(() => {
@@ -30,42 +28,56 @@ const App: React.FC = () => {
   }, [activePage]);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 selection:bg-blue-500/30 selection:text-blue-200 font-sans">
-      <Navigation activePage={activePage} setActivePage={setActivePage} isScrolled={isScrolled} />
+    <div className="min-h-screen bg-[#030303] text-[#FAFAFA] font-sans relative overflow-hidden selection:bg-white/20">
       
-      <main className="transition-opacity duration-500 ease-in-out">
+      {/* Spatial Ambient Background */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* Mouse Glow */}
+        <div 
+          className="absolute w-[800px] h-[800px] rounded-full bg-indigo-500/10 blur-[120px] transition-transform duration-1000 ease-out"
+          style={{ transform: `translate(${mousePos.x - 400}px, ${mousePos.y - 400}px)` }}
+        />
         
-        {/* MODIFIED SECTION:
-          use css to hide home instead of unmounting to keep music playing, may be inefficient, temporary solution
-        */}
-        <div className={activePage === 'home' ? 'block animate-in fade-in duration-700' : 'hidden'}>
-           <Home setActivePage={setActivePage} />
-        </div>
+        {/* Animated Aurora Orbs */}
+        <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vh] bg-emerald-500/10 rounded-full blur-[120px] animate-ambient-1 mix-blend-screen" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vh] bg-blue-600/10 rounded-full blur-[100px] animate-ambient-2 mix-blend-screen" />
+        <div className="absolute top-[20%] right-[20%] w-[40vw] h-[40vh] bg-purple-500/10 rounded-full blur-[100px] animate-ambient-3 mix-blend-screen" />
         
-        {/*pages below can still use conditional rendering to save performance,
-           since they don't have persistent audio.
-        */}
-        {activePage === 'projects' && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <Projects />
-          </div>
-        )}
-        
-        {activePage === 'about' && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
-            <About />
-          </div>
-        )}
-        
-        {activePage === 'contact' && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <Contact />
-          </div>
-        )}
-      </main>
+        {/* Noise Texture */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.15] mix-blend-overlay"></div>
+      </div>
 
-      {/* Floating Chat Widget on all pages*/}
-      <ChatWidget />
+      <div className="relative z-10">
+        <main className="pb-32 pt-16 transition-opacity duration-700 ease-in-out px-4 md:px-0">
+          
+          <div className={activePage === 'home' ? 'block animate-in fade-in zoom-in-95 duration-1000' : 'hidden'}>
+             <Home setActivePage={setActivePage} />
+          </div>
+          
+          {activePage === 'projects' && (
+            <div className="animate-in fade-in slide-in-from-bottom-12 duration-1000">
+              <Projects />
+            </div>
+          )}
+          
+          {activePage === 'about' && (
+            <div className="animate-in fade-in slide-in-from-bottom-12 duration-1000">
+              <About />
+            </div>
+          )}
+          
+          {activePage === 'contact' && (
+            <div className="animate-in fade-in slide-in-from-bottom-12 duration-1000">
+              <Contact />
+            </div>
+          )}
+        </main>
+
+        {/* Spatial Dock Navigation */}
+        <Navigation activePage={activePage} setActivePage={setActivePage} />
+        
+        <ChatWidget />
+      </div>
     </div>
   );
 };

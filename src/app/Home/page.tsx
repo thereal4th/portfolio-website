@@ -1,11 +1,8 @@
 "use client";
 
-import { useState, useEffect } from 'react';
 import { GithubIcon, LinkedinIcon } from "@/src/components/ui/CustomIcons";
 import PORTFOLIO_DATA from "@/src/data/PortfolioData";
-import { ChevronRight, Mail, Globe, ExternalLink, Terminal, RefreshCw, Command, Activity } from "lucide-react";
-import { GitHubCalendar } from 'react-github-calendar';
-import TechStack from '@/src/components/TechStack';
+import { ArrowRight, Mail } from "lucide-react";
 
 type Page = 'home' | 'projects' | 'about' | 'contact';
 
@@ -13,214 +10,60 @@ interface HeroProps {
   setActivePage: (page: Page) => void;
 }
 
-interface JokeData {
-  setup: string;
-  punchline: string;
-}
-
 const Home: React.FC<HeroProps> = ({ setActivePage }) => {
-
-  let isForHire = true;
-  let isForHireClassName = isForHire ? "bg-green-400" : "bg-red-400"
-  let isForHireText = isForHire ? "Available for hire" : "Not available for hire"
-  let spotifyPlaylistID = "1ZqjTHeh9l4jz0KavDju8o"
-
-  // --- API STATE ---
-  const [joke, setJoke] = useState<JokeData | null>(null);
-  const [loadingJoke, setLoadingJoke] = useState(true);
-
-  // --- API FETCH FUNCTION ---
-  const fetchJoke = async () => {
-    setLoadingJoke(true);
-    try {
-      const res = await fetch('https://official-joke-api.appspot.com/jokes/programming/random');
-      const data = await res.json();
-      setJoke(data[0]); 
-    } catch (error) {
-      console.error("Failed to fetch joke", error);
-    } finally {
-      setLoadingJoke(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchJoke();
-  }, []);
-
-  const calendarTheme = {
-    light: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
-    dark: ['#334155', '#065f46', '#059669', '#10b981', '#34d399'],
-  };
-
   return (
-    <>
-      {/* --- HERO SECTION --- */}
-      <div className="min-h-screen flex items-center justify-center pt-16 relative overflow-hidden">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
-
-        <div className="max-w-4xl mx-auto px-6 text-center z-10 flex flex-col items-center">
-          
-          <div className="mb-8 relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
-            <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-slate-900 bg-slate-800">
-              <img
-                src={`/myprofile.png`}
-                alt="Profile"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-            </div>
-          </div>
-
-          <div className="mb-4 flex justify-center gap-8 text-slate-500">
-            <a href="https://github.com/thereal4th" target="_blank" rel="noopener noreferrer"><GithubIcon className="hover:text-white cursor-pointer transition-colors" /></a>
-            <a href="https://linkedin.com/in/alfredo-venturina-0475b532a" target="_blank" rel="noopener noreferrer"><LinkedinIcon className="hover:text-white cursor-pointer transition-colors" /></a>
-            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=alfredoventurina@gmail.com" target="_blank" rel="noopener noreferrer"><Mail className="hover:text-white cursor-pointer transition-colors" /></a>
-          </div>
-
-          <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-slate-700 bg-slate-800/50 backdrop-blur-sm">
-            <span className="text-blue-400 text-sm font-medium flex items-center gap-2">
-              <span className={`w-2 h-2 rounded-full ${isForHireClassName} animate-pulse`} />
-              {isForHireText}
-            </span>
-          </div>
-
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
-            Hi, I'm{' '}
-            {/* animation wrapper*/}
-            <span className="group relative inline-block overflow-hidden align-bottom cursor-pointer">
-              
-              {/*(Slides Up) */}
-              <span className="block transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:-translate-y-full">
-                {PORTFOLIO_DATA.name}.
-              </span>
-
-              {/* 2. Hover Text (Slides In) - Inherits font, overrides color */}
-              <span className="absolute top-0 left-0 block w-full text-blue-400 transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] translate-y-full group-hover:translate-y-0">
-                4th.
-              </span>
-            </span>
-            
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-3xl md:text-5xl block mt-2">
-              {PORTFOLIO_DATA.role}
-            </span>
-          </h1>
-
-          <p className="text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-            {PORTFOLIO_DATA.bio}
-          </p>
-
-          <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
-            <button onClick={() => setActivePage('projects')} className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-medium transition-all hover:scale-105 flex items-center gap-2 shadow-lg shadow-blue-500/25">
-              View Work <ChevronRight size={20} />
-            </button>
-            <button onClick={() => setActivePage('contact')} className="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-medium transition-all border border-slate-700 hover:border-slate-600">
-              Contact Me
-            </button>
-          </div>
+    <div className="min-h-[85vh] flex flex-col justify-center max-w-6xl mx-auto px-6 lg:px-12 relative z-10">
+      
+      {/* Top Tag */}
+      <div className="flex items-center gap-3 mb-8 animate-in slide-in-from-bottom-8 duration-1000 delay-100">
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full spatial-card">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="text-xs font-semibold tracking-wider text-white/70 uppercase">Available for new opportunities</span>
         </div>
       </div>
 
-      {/* --- BENTO GRID SECTION --- */}
-      <section className="py-15 px-6 max-w-6xl mx-auto">
-        
-        {/*<TechStack/>*/}
+      {/* Massive Typography Hero */}
+      <div className="relative animate-in slide-in-from-bottom-12 duration-1000 delay-300">
+        <h1 className="text-5xl md:text-7xl lg:text-[7rem] font-extrabold tracking-tighter leading-[0.9] text-white">
+          <span className="block opacity-90">{PORTFOLIO_DATA.name.split(' ')[0]}</span>
+          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-white/90 via-white/50 to-white/20">
+            {PORTFOLIO_DATA.name.split(' ')[1] || PORTFOLIO_DATA.role}
+          </span>
+        </h1>
+      </div>
 
-        <h2 className="text-2xl font-bold text-white mb-8 flex items-center gap-2">
-          <Terminal size={24} className="text-blue-400" />
-          The Nitty Gritty
-        </h2>
+      {/* Description & CTA */}
+      <div className="mt-12 md:mt-20 grid grid-cols-1 md:grid-cols-2 gap-10 items-end animate-in slide-in-from-bottom-12 duration-1000 delay-500">
+        <p className="text-xl md:text-2xl text-white/50 font-light leading-relaxed max-w-lg">
+          I build <strong className="text-white font-medium">immersive digital experiences</strong>.
+          <br className="hidden md:block" /> {PORTFOLIO_DATA.bio}
+        </p>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="flex flex-col sm:flex-row items-center md:justify-end gap-6">
+          <div className="flex items-center gap-5 text-white/40">
+            <a href="https://github.com/thereal4th" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors hover:scale-110 transform"><GithubIcon className="w-6 h-6" /></a>
+            <a href="https://linkedin.com/in/alfredo-venturina-0475b532a" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors hover:scale-110 transform"><LinkedinIcon className="w-6 h-6" /></a>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=alfredoventurina@gmail.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors hover:scale-110 transform"><Mail className="w-6 h-6" /></a>
+          </div>
           
-          {/* Card 1: GitHub Contributions */}
-          <div className="md:col-span-2 bg-slate-900/50 border border-slate-800 p-6 rounded-2xl hover:border-slate-700 transition-colors relative group flex flex-col justify-center overflow-hidden">
-            <div className="absolute top-0 right-0 p-4 opacity-50 group-hover:opacity-100 transition-opacity z-10">
-              <a href="https://github.com/thereal4th" target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="w-5 h-5 text-slate-400 hover:text-white" />
-              </a>
-            </div>
-            <h3 className="text-slate-200 font-medium mb-4 flex items-center gap-2"><GithubIcon className="w-5 h-5 text-slate-500" /> GitHub Activity</h3>
-            <div className="w-full flex justify-center overflow-hidden opacity-80 hover:opacity-100 transition-opacity">
-               <GitHubCalendar username="thereal4th" colorScheme="dark" theme={calendarTheme} blockSize={12} blockMargin={4} fontSize={12} labels={{ totalCount: '{{count}} contributions in the last year' }} />
-            </div>
-          </div>
-
-          {/* Card 2: SYSTEM STATUS + JOKE (COMPACT VERSION) */}
-          {/* Change 1: Reduced gap from 6 to 4 to tighten height */}
-          <div className="bg-slate-900/50 border border-slate-800 p-5 rounded-2xl hover:border-slate-700 transition-colors flex flex-col gap-4 justify-between">
-            
-            {/* Top Half: Terminal Status */}
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-slate-200 font-medium flex items-center gap-2 text-sm">
-                  <Command size={14} className="text-green-400" /> System Status
-                </h3>
-                <Activity size={14} className="text-green-400 animate-pulse" />
-              </div>
-              
-              {/* Change 2: Reduced text size to text-[10px] and vertical spacing to space-y-1 */}
-              <div className="font-mono text-[10px] space-y-1 bg-slate-950/50 p-2.5 rounded-lg border border-slate-800/50">
-                <p className="text-slate-400">
-                  <span className="text-green-400">➜</span>  ~ whoami
-                </p>
-                <p className="text-white pl-3">Alfredo '4th' V.</p>
-                
-                <p className="text-slate-400 mt-2">
-                  <span className="text-green-400">➜</span>  ~ current-focus
-                </p>
-                <div className="pl-3 flex flex-col">
-                   <span className="text-blue-300">▹ CI/CD</span>
-                   <span className="text-purple-300">▹ DevOps</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Bottom Half: API Data (The Joke) */}
-            <div className="pt-3 border-t border-slate-800">
-               <div className="flex items-center justify-between mb-2">
-                 <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Funny Module</h3>
-                 <button onClick={fetchJoke} disabled={loadingJoke} className="p-1 hover:bg-slate-800 rounded-full transition-colors">
-                    <RefreshCw size={12} className={`text-blue-400 ${loadingJoke ? 'animate-spin' : ''}`} />
-                 </button>
-               </div>
-               
-               {/* Change 3: Reduced min-height to ensure Card 1 doesn't stretch too much */}
-               <div className="text-xs text-slate-300 min-h-[45px]">
-                 {loadingJoke ? (
-                   <span className="text-slate-600 animate-pulse">Fetching joke...</span>
-                 ) : joke ? (
-                   <>
-                    <p className="mb-1">"{joke.setup}"</p>
-                    <p className="text-blue-400 font-medium italic">{joke.punchline}</p>
-                   </>
-                 ) : (
-                   <span className="text-red-400">Failed to load joke.</span>
-                 )}
-               </div>
-            </div>
-          </div>
-
-          {/* Card 3: Location (Matches Height) */}
-          <div className="border border-slate-800 p-6 rounded-2xl hover:border-slate-700 transition-colors relative overflow-hidden group bg-cover bg-center bg-no-repeat h-[152px]" style={{ backgroundImage: "url('/flag.png')" }}>
-             <div className="absolute inset-0 bg-slate-950/60 transition-opacity group-hover:bg-slate-950/40 z-0" />
-             <div className="relative z-10 flex flex-col justify-center h-full">
-               <h3 className="text-slate-400 text-sm font-medium mb-1">Based In</h3>
-               <p className="text-xl text-white font-semibold flex items-center gap-2"><Globe size={18} className="text-blue-400" /> Manila, PH</p>
-               <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 bg-green-500/10 text-green-400 text-xs rounded-full border border-green-500/20 w-fit">
-                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"/> UTC+8
-               </div>
-             </div>
-          </div>
-
-          {/* Card 4: Spotify Embed */}
-          <div className="md:col-span-2 bg-slate-900/50 border border-slate-800 rounded-2xl hover:border-slate-700 transition-colors overflow-hidden h-[152px]">
-             <iframe style={{borderRadius: "12px"}} src={`https://open.spotify.com/embed/playlist/${spotifyPlaylistID}?utm_source=generator&theme=0`} width="100%" height="152" frameBorder="0" allowFullScreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" className="opacity-90 hover:opacity-100 transition-opacity block"></iframe>
-          </div>
-
+          <button 
+            onClick={() => setActivePage('projects')}
+            className="group flex items-center gap-3 px-8 py-4 bg-white text-black rounded-full font-bold text-lg hover:scale-105 transition-all shadow-[0_0_40px_rgba(255,255,255,0.3)]"
+          >
+            Explore Work
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </button>
         </div>
-      </section>
-    </>
+      </div>
+
+      {/* Abstract Design Element */}
+      <div className="absolute right-[5%] top-[10%] w-64 h-64 md:w-96 md:h-96 pointer-events-none opacity-50 mix-blend-screen animate-ambient-1 delay-1000">
+        <div className="absolute inset-0 rounded-full border border-white/20 animate-[spin_20s_linear_infinite]" />
+        <div className="absolute inset-4 rounded-full border border-white/10 animate-[spin_30s_linear_infinite_reverse]" />
+        <div className="absolute inset-12 rounded-full border border-white/5 animate-[spin_40s_linear_infinite]" />
+      </div>
+      
+    </div>
   )
 };
 

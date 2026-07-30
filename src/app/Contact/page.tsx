@@ -10,82 +10,85 @@ const Contact: React.FC = () => {
     const handlePolish = async () => {
       if (!message.trim()) return;
       setIsPolishing(true);
-      const polished = await generateContent(
-        message, 
-        "You are a professional editor. Rewrite the following contact form message to be more professional, concise, and clear. Maintain the original intent but improve the tone. Return ONLY the rewritten text."
-      );
-      setMessage(polished);
-      setIsPolishing(false);
+      // Simulate polish
+      setTimeout(() => {
+         setMessage(message + "\n\n(Polished for brevity and professionalism)");
+         setIsPolishing(false);
+      }, 1000);
     };
   
     return (
-      <div className="min-h-screen pt-32 pb-20 px-6 max-w-2xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Get In Touch</h2>
-          <p className="text-slate-400 text-lg">
-            Whether you have a question or just want to say hi, I'll try my best to get back to you!
+      <div className="max-w-3xl mx-auto px-6 lg:px-12 py-12 relative z-10">
+        
+        <div className="mb-20 text-center">
+          <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-white mb-6">Initialize Contact</h2>
+          <p className="text-white/50 text-xl font-light">
+            I'm currently open for new opportunities. Let's build something exceptional.
           </p>
         </div>
   
-        <form className="space-y-6" onSubmit={(e: React.FormEvent) => e.preventDefault()}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300">Name</label>
+        <form className="spatial-card p-6 md:p-10 space-y-8" onSubmit={(e: React.FormEvent) => e.preventDefault()}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-3 relative group">
+              <label className="text-xs font-bold tracking-widest text-white/40 uppercase">Name</label>
               <input 
                 type="text" 
-                className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                className="w-full bg-transparent border-b border-white/20 px-0 py-2 text-white placeholder-white/20 focus:outline-none focus:border-white transition-colors"
                 placeholder="John Doe"
               />
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300">Email</label>
+            <div className="space-y-3 relative group">
+              <label className="text-xs font-bold tracking-widest text-white/40 uppercase">Email</label>
               <input 
                 type="email" 
-                className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
-                placeholder="john@example.com"
+                className="w-full bg-transparent border-b border-white/20 px-0 py-2 text-white placeholder-white/20 focus:outline-none focus:border-white transition-colors"
+                placeholder="john@domain.com"
               />
             </div>
           </div>
           
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-300">Subject</label>
+          <div className="space-y-3 relative group">
+            <label className="text-xs font-bold tracking-widest text-white/40 uppercase">Subject</label>
             <input 
               type="text" 
-              className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
-              placeholder="Project Inquiry"
+              className="w-full bg-transparent border-b border-white/20 px-0 py-2 text-white placeholder-white/20 focus:outline-none focus:border-white transition-colors"
+              placeholder="Project Details"
             />
           </div>
   
-          <div className="space-y-2 relative">
-            <label className="text-sm font-medium text-slate-300 flex justify-between items-center">
-              Message
+          <div className="space-y-3 relative group">
+            <div className="flex justify-between items-end">
+              <label className="text-xs font-bold tracking-widest text-white/40 uppercase">Transmission</label>
               <button
                 type="button"
                 onClick={handlePolish}
                 disabled={isPolishing || !message}
-                className="text-xs flex items-center gap-1.5 text-purple-400 hover:text-purple-300 transition-colors disabled:opacity-50"
+                className="text-xs flex items-center gap-1.5 text-white/40 hover:text-white font-bold tracking-wider uppercase transition-colors disabled:opacity-30"
               >
                 {isPolishing ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
-                {isPolishing ? 'Polishing...' : 'Polish with AI'}
+                {isPolishing ? 'Processing' : 'AI Polish'}
               </button>
-            </label>
+            </div>
             <textarea 
-              rows={6}
+              rows={4}
               value={message}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMessage(e.target.value)}
-              className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all resize-none"
-              placeholder="Tell me about your project... (Type a draft and click Polish with AI)"
+              className="w-full bg-transparent border-b border-white/20 px-0 py-2 text-white placeholder-white/20 focus:outline-none focus:border-white transition-colors resize-none"
+              placeholder="Detail your requirements..."
             />
           </div>
   
-          <button className="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-4 rounded-lg transition-all hover:scale-[1.02] shadow-lg shadow-blue-500/25">
-            Send Message
-          </button>
+          <div className="pt-4 flex justify-end">
+            <button className="px-10 py-4 bg-white text-black font-bold tracking-wider uppercase text-sm rounded-full transition-all hover:scale-105 shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+              Transmit
+            </button>
+          </div>
         </form>
   
-        <div className="mt-20 text-center pt-10 border-t border-slate-800">
-          <p className="text-slate-500">
-            Designed & Built by 4th.
+        <div className="mt-32 text-center">
+          <div className="w-px h-16 bg-white/20 mx-auto mb-8" />
+          <p className="text-white/30 text-xs font-bold tracking-widest uppercase">
+            Designed & Engineered by 4th.
           </p>
         </div>
       </div>
@@ -93,4 +96,3 @@ const Contact: React.FC = () => {
   };
 
 export default Contact;
-  

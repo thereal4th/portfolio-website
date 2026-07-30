@@ -1,76 +1,59 @@
 import { GithubIcon } from "@/src/components/ui/CustomIcons";
 import PORTFOLIO_DATA from "@/src/data/PortfolioData";
-import { Code, Cpu, Database, ExternalLink, Globe } from "lucide-react";
-import { JSX } from "react";
+import { ExternalLink } from "lucide-react";
 
 const Projects: React.FC = () => {
-  const getIcon = (type: string): JSX.Element => {
-    switch (type) {
-      case 'Database': return <Database size={24} className="text-blue-400" />;
-      case 'Cpu': return <Cpu size={24} className="text-purple-400" />;
-      case 'Globe': return <Globe size={24} className="text-green-400" />;
-      default: return <Code size={24} className="text-blue-400" />;
-    }
-  };
-
   return (
-    <div className="min-h-screen pt-32 pb-20 px-6 max-w-6xl mx-auto">
-      <div className="flex justify-between items-end mb-12">
-        <h2 className="text-3xl md:text-5xl font-bold text-white">Featured Projects</h2>
+    <div className="max-w-6xl mx-auto px-6 lg:px-12 py-12 relative z-10">
+      
+      <div className="mb-20">
+        <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-white mb-4">Selected Work</h2>
+        <div className="w-24 h-1 bg-white/20 rounded-full" />
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="space-y-32">
         {PORTFOLIO_DATA.projects.map((project, index) => (
           <div 
             key={index}
-            className="group relative bg-slate-800/50 border border-slate-700 rounded-2xl hover:border-slate-500 transition-all duration-300 hover:-translate-y-2 overflow-hidden flex flex-col h-full"
+            className={`flex flex-col ${index % 2 !== 0 ? 'md:flex-row-reverse' : 'md:flex-row'} gap-10 md:gap-16 items-center group`}
           >
-            {/* Color Hover Effect */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-            
-            {/* THUMBNAIL SIZE FIX:
-               Changed h-72 (18rem) -> h-48 (12rem). 
-               Kept 'shrink-0' so it doesn't squish.
-            */}
-            <div className="relative h-48 w-full shrink-0 overflow-hidden border-b border-slate-700/50">
-              <img 
-                src={project.thumbnail} 
-                alt={project.title}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              
-              {/* Icon as Overlaid Badge */}
-              <div className="absolute top-3 right-3 z-20 p-2.5 bg-slate-900/60 backdrop-blur-md rounded-xl border border-slate-700/50 shadow-lg">
-                {getIcon(project.iconType)}
+            {/* Image Container */}
+            <div className="w-full md:w-3/5 spatial-card p-2 md:p-4 overflow-hidden">
+              <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black/50">
+                <img 
+                  src={project.thumbnail} 
+                  alt={project.title}
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80 group-hover:opacity-100"
+                />
+                <div className="absolute inset-0 border border-white/10 rounded-2xl pointer-events-none mix-blend-overlay" />
               </div>
             </div>
 
-            <div className="relative z-10 flex flex-col flex-1 p-5">
-              <h3 className="text-xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors">
-                {project.title}
-              </h3>
-              
-              <p className="text-slate-400 text-sm leading-relaxed flex-grow line-clamp-3 mb-8">
-                {project.description}
-              </p>
-              
-              <div className="h-px w-full bg-slate-700/50 my-8" />
-
-              <div className="flex flex-wrap gap-2 mb-4">
-                {project.tags.map((tag, i) => (
-                  <span key={i} className="text-xs font-medium px-2.5 py-1 rounded-full bg-slate-700/50 text-slate-300 border border-slate-600">
+            {/* Content */}
+            <div className="w-full md:w-2/5 flex flex-col justify-center">
+              <div className="mb-6 flex flex-wrap gap-2">
+                {project.tags.slice(0, 3).map((tag, i) => (
+                  <span key={i} className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white/60 border border-white/10 rounded-full bg-white/[0.02]">
                     {tag}
                   </span>
                 ))}
               </div>
-
-              <div className="flex items-center gap-4 mt-auto">
-                <a href={project.github} target="_blank" className="flex items-center gap-2 text-sm font-medium text-white hover:text-blue-400 transition-colors">
-                  <GithubIcon size={16} /> Code
+              
+              <h3 className="text-3xl md:text-4xl font-bold text-white mb-4 group-hover:text-glow transition-all">
+                {project.title}
+              </h3>
+              
+              <p className="text-lg text-white/50 font-light leading-relaxed mb-8">
+                {project.description}
+              </p>
+              
+              <div className="flex items-center gap-6">
+                <a href={project.github} target="_blank" className="flex items-center gap-2 text-sm font-bold tracking-wide uppercase text-white/80 hover:text-white transition-colors border-b border-transparent hover:border-white pb-1">
+                  <GithubIcon size={16} /> Source
                 </a>
                 {project.demo && (
-                    <a href={project.demo} target="_blank" className="flex items-center gap-2 text-sm font-medium text-white hover:text-blue-400 transition-colors">
-                    <ExternalLink size={16} /> Demo
+                  <a href={project.demo} target="_blank" className="flex items-center gap-2 text-sm font-bold tracking-wide uppercase text-white/80 hover:text-white transition-colors border-b border-transparent hover:border-white pb-1">
+                    <ExternalLink size={16} /> Live Demo
                   </a>
                 )}
               </div>
