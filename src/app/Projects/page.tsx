@@ -1,6 +1,9 @@
+"use client";
+
 import { GithubIcon } from "@/src/components/ui/CustomIcons";
 import PORTFOLIO_DATA from "@/src/data/PortfolioData";
 import { ExternalLink } from "lucide-react";
+import { motion } from "framer-motion";
 
 const Projects: React.FC = () => {
   return (
@@ -13,8 +16,17 @@ const Projects: React.FC = () => {
       
       <div className="space-y-32">
         {PORTFOLIO_DATA.projects.map((project, index) => (
-          <div 
+          <motion.div 
             key={index}
+            initial={{ opacity: 0, x: index % 2 !== 0 ? 150 : -150, y: -50 }}
+            whileInView={{ opacity: 1, x: 0, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ 
+              type: "spring", 
+              stiffness: 100, 
+              damping: 12,
+              mass: 1.2
+            }}
             className={`flex flex-col ${index % 2 !== 0 ? 'md:flex-row-reverse' : 'md:flex-row'} gap-10 md:gap-16 items-center group`}
           >
             {/* Image Container */}
@@ -58,7 +70,7 @@ const Projects: React.FC = () => {
                 )}
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

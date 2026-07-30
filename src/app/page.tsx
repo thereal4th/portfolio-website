@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import Navigation from '../components/Navigation';
 import About from './About/page';
@@ -27,6 +28,12 @@ const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [activePage]);
 
+  const pageVariants = {
+    initial: { opacity: 0, y: 20, filter: 'blur(10px)' },
+    animate: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+    exit: { opacity: 0, y: -20, filter: 'blur(10px)', transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }
+  };
+
   return (
     <div className="min-h-screen bg-[#030303] text-[#FAFAFA] font-sans relative overflow-hidden selection:bg-white/20">
       
@@ -48,29 +55,32 @@ const App: React.FC = () => {
       </div>
 
       <div className="relative z-10">
-        <main className="pb-32 pt-16 transition-opacity duration-700 ease-in-out px-4 md:px-0">
-          
-          <div className={activePage === 'home' ? 'block animate-in fade-in zoom-in-95 duration-1000' : 'hidden'}>
-             <Home setActivePage={setActivePage} />
-          </div>
-          
-          {activePage === 'projects' && (
-            <div className="animate-in fade-in slide-in-from-bottom-12 duration-1000">
-              <Projects />
-            </div>
-          )}
-          
-          {activePage === 'about' && (
-            <div className="animate-in fade-in slide-in-from-bottom-12 duration-1000">
-              <About />
-            </div>
-          )}
-          
-          {activePage === 'contact' && (
-            <div className="animate-in fade-in slide-in-from-bottom-12 duration-1000">
-              <Contact />
-            </div>
-          )}
+        <main className="pb-32 pt-16 px-4 md:px-0 min-h-screen">
+          <AnimatePresence mode="wait">
+            {activePage === 'home' && (
+              <motion.div key="home" variants={pageVariants} initial="initial" animate="animate" exit="exit">
+                <Home setActivePage={setActivePage} />
+              </motion.div>
+            )}
+            
+            {activePage === 'projects' && (
+              <motion.div key="projects" variants={pageVariants} initial="initial" animate="animate" exit="exit">
+                <Projects />
+              </motion.div>
+            )}
+            
+            {activePage === 'about' && (
+              <motion.div key="about" variants={pageVariants} initial="initial" animate="animate" exit="exit">
+                <About />
+              </motion.div>
+            )}
+            
+            {activePage === 'contact' && (
+              <motion.div key="contact" variants={pageVariants} initial="initial" animate="animate" exit="exit">
+                <Contact />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </main>
 
         {/* Spatial Dock Navigation */}

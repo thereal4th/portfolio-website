@@ -2,6 +2,7 @@
 
 import { Loader2, Sparkles } from "lucide-react";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const Contact: React.FC = () => {
     const [message, setMessage] = useState<string>('');
@@ -16,47 +17,69 @@ const Contact: React.FC = () => {
          setIsPolishing(false);
       }, 1000);
     };
+
+    const containerVariants = {
+      hidden: { opacity: 0 },
+      show: {
+        opacity: 1,
+        transition: { staggerChildren: 0.15 }
+      }
+    };
+  
+    const itemVariants = {
+      hidden: { opacity: 0, y: 30 },
+      show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80 } }
+    };
   
     return (
-      <div className="max-w-3xl mx-auto px-6 lg:px-12 py-12 relative z-10">
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+        className="max-w-3xl mx-auto px-6 lg:px-12 py-12 relative z-10"
+      >
         
-        <div className="mb-20 text-center">
+        <motion.div variants={itemVariants} className="mb-20 text-center">
           <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-white mb-6">Initialize Contact</h2>
           <p className="text-white/50 text-xl font-light">
             I'm currently open for new opportunities. Let's build something exceptional.
           </p>
-        </div>
+        </motion.div>
   
-        <form className="spatial-card p-6 md:p-10 space-y-8" onSubmit={(e: React.FormEvent) => e.preventDefault()}>
+        <motion.form 
+          variants={itemVariants} 
+          className="spatial-card p-6 md:p-10 space-y-8" 
+          onSubmit={(e: React.FormEvent) => e.preventDefault()}
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-3 relative group">
+            <motion.div variants={itemVariants} className="space-y-3 relative group">
               <label className="text-xs font-bold tracking-widest text-white/40 uppercase">Name</label>
               <input 
                 type="text" 
                 className="w-full bg-transparent border-b border-white/20 px-0 py-2 text-white placeholder-white/20 focus:outline-none focus:border-white transition-colors"
                 placeholder="John Doe"
               />
-            </div>
-            <div className="space-y-3 relative group">
+            </motion.div>
+            <motion.div variants={itemVariants} className="space-y-3 relative group">
               <label className="text-xs font-bold tracking-widest text-white/40 uppercase">Email</label>
               <input 
                 type="email" 
                 className="w-full bg-transparent border-b border-white/20 px-0 py-2 text-white placeholder-white/20 focus:outline-none focus:border-white transition-colors"
                 placeholder="john@domain.com"
               />
-            </div>
+            </motion.div>
           </div>
           
-          <div className="space-y-3 relative group">
+          <motion.div variants={itemVariants} className="space-y-3 relative group">
             <label className="text-xs font-bold tracking-widest text-white/40 uppercase">Subject</label>
             <input 
               type="text" 
               className="w-full bg-transparent border-b border-white/20 px-0 py-2 text-white placeholder-white/20 focus:outline-none focus:border-white transition-colors"
               placeholder="Project Details"
             />
-          </div>
+          </motion.div>
   
-          <div className="space-y-3 relative group">
+          <motion.div variants={itemVariants} className="space-y-3 relative group">
             <div className="flex justify-between items-end">
               <label className="text-xs font-bold tracking-widest text-white/40 uppercase">Transmission</label>
               <button
@@ -76,22 +99,31 @@ const Contact: React.FC = () => {
               className="w-full bg-transparent border-b border-white/20 px-0 py-2 text-white placeholder-white/20 focus:outline-none focus:border-white transition-colors resize-none"
               placeholder="Detail your requirements..."
             />
-          </div>
+          </motion.div>
   
-          <div className="pt-4 flex justify-end">
-            <button className="px-10 py-4 bg-white text-black font-bold tracking-wider uppercase text-sm rounded-full transition-all hover:scale-105 shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+          <motion.div variants={itemVariants} className="pt-4 flex justify-end">
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-10 py-4 bg-white text-black font-bold tracking-wider uppercase text-sm rounded-full shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+            >
               Transmit
-            </button>
-          </div>
-        </form>
+            </motion.button>
+          </motion.div>
+        </motion.form>
   
-        <div className="mt-32 text-center">
+        <motion.div 
+          initial={{ opacity: 0, height: 0 }}
+          whileInView={{ opacity: 1, height: 'auto' }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="mt-32 text-center"
+        >
           <div className="w-px h-16 bg-white/20 mx-auto mb-8" />
           <p className="text-white/30 text-xs font-bold tracking-widest uppercase">
             Designed & Engineered by 4th.
           </p>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     );
   };
 
