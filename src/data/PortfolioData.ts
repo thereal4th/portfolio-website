@@ -31,7 +31,7 @@ interface PortfolioData {
 const PORTFOLIO_DATA: PortfolioData = {
   name: "Alfredo Venturina IV",
   nickname: "4th",
-  role: "Full Stack Developer / Machine Learning Engineer",
+  role: "Full Stack Developer",
   bio: "I love to create, design, and solve problems. Coding is an outlet for me to do what I love.",
   skills: [
     "Next.js", "React.js", "Node.js", "Express.js",

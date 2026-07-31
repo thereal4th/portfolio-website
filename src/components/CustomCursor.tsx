@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, useSpring } from 'framer-motion';
 
 export default function CustomCursor() {
@@ -9,6 +9,7 @@ export default function CustomCursor() {
   const cursorY = useSpring(0, { stiffness: 500, damping: 28, mass: 0.5 });
 
   useEffect(() => {
+    let isHovering = false;
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX - 16);
       cursorY.set(e.clientY - 16);
@@ -16,20 +17,20 @@ export default function CustomCursor() {
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (
+      const shouldHover = !!(
         target.tagName.toLowerCase() === 'button' ||
         target.tagName.toLowerCase() === 'a' ||
         target.closest('button') ||
         target.closest('a')
-      ) {
-        setIsHovered(true);
-      } else {
-        setIsHovered(false);
+      );
+      if (shouldHover !== isHovering) {
+        isHovering = shouldHover;
+        setIsHovered(shouldHover);
       }
     };
 
-    window.addEventListener('mousemove', moveCursor);
-    window.addEventListener('mouseover', handleMouseOver);
+    window.addEventListener('mousemove', moveCursor, { passive: true });
+    window.addEventListener('mouseover', handleMouseOver, { passive: true });
 
     return () => {
       window.removeEventListener('mousemove', moveCursor);
@@ -41,7 +42,7 @@ export default function CustomCursor() {
     <>
       <style dangerouslySetInnerHTML={{__html: `body { cursor: none; }`}} />
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-white/50 pointer-events-none z-[9999] mix-blend-difference flex items-center justify-center"
+        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-white/50 pointer-events-none z-[9999] mix-blend-difference flex items-center justify-center will-change-transform"
         style={{
           x: cursorX,
           y: cursorY,
@@ -53,7 +54,7 @@ export default function CustomCursor() {
         transition={{ duration: 0.2 }}
       />
       <motion.div
-        className="fixed top-0 left-0 w-2 h-2 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference"
+        className="fixed top-0 left-0 w-2 h-2 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference will-change-transform"
         style={{
           x: useSpring(cursorX, { stiffness: 1000, damping: 28, mass: 0.1 }),
           y: useSpring(cursorY, { stiffness: 1000, damping: 28, mass: 0.1 }),

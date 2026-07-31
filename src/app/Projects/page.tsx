@@ -40,7 +40,7 @@ const Projects: React.FC = () => {
       
       <div className="space-y-40">
         {PORTFOLIO_DATA.projects.map((project, index) => (
-          <div key={index} className="relative">
+          <div key={index} className="relative [content-visibility:auto] [contain-intrinsic-size:500px]">
             
             {/* Animated Background Stripe */}
             <motion.div

@@ -102,7 +102,7 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
       <div className="mt-32 pb-10 overflow-hidden w-full select-none pointer-events-none border-y border-gray-200 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-md">
         <motion.div style={{ x: marqueeX }} className="flex whitespace-nowrap">
           <h2 className="text-[15vw] font-black tracking-tighter uppercase leading-none text-transparent bg-clip-text bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-violet-600/10 dark:from-cyan-500/50 dark:via-fuchsia-500/50 dark:to-yellow-500/50">
-            {PORTFOLIO_DATA.role} — DIGITAL ALCHEMIST — {PORTFOLIO_DATA.role} —
+            {PORTFOLIO_DATA.role} {PORTFOLIO_DATA.role}
           </h2>
         </motion.div>
       </div>
