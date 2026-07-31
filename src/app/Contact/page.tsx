@@ -2,7 +2,7 @@
 
 import { Loader2, Sparkles } from "lucide-react";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 const Contact: React.FC = () => {
     const [message, setMessage] = useState<string>('');
@@ -17,7 +17,7 @@ const Contact: React.FC = () => {
       }, 1000);
     };
 
-    const containerVariants = {
+    const containerVariants: Variants = {
       hidden: { opacity: 0 },
       show: {
         opacity: 1,
@@ -25,7 +25,7 @@ const Contact: React.FC = () => {
       }
     };
   
-    const itemVariants = {
+    const itemVariants: Variants = {
       hidden: { opacity: 0, y: 30 },
       show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80 } }
     };

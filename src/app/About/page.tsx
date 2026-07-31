@@ -1,10 +1,10 @@
 "use client";
 
 import PORTFOLIO_DATA from "@/src/data/PortfolioData";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 const About: React.FC = () => {
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
@@ -12,7 +12,7 @@ const About: React.FC = () => {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } }
   };

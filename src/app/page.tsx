@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useTransform, useMotionValue, useMotionTemplate, Variants } from 'framer-motion';
 
 import Navigation from '../components/Navigation';
 import About from './About/page';
@@ -40,7 +40,8 @@ const BackgroundGeometry = () => {
 const App: React.FC = () => {
   const [activePage, setActivePage] = useState<Page>('home');
   const [theme, setTheme] = useState<Theme>('light');
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
   useEffect(() => {
     // Add or remove dark class on HTML element based on theme
@@ -54,21 +55,24 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
     };
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  }, [mouseX, mouseY]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [activePage]);
 
-  const pageVariants = {
+  const pageVariants: Variants = {
     initial: { opacity: 0, y: 60, scale: 0.98, filter: 'blur(10px)' },
-    animate: { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
-    exit: { opacity: 0, y: -60, scale: 0.98, filter: 'blur(10px)', transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }
+    animate: { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
+    exit: { opacity: 0, y: -60, scale: 0.98, filter: 'blur(10px)', transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } }
   };
+  
+  const spotlightTransform = useMotionTemplate`translate(calc(${mouseX}px - 500px), calc(${mouseY}px - 500px))`;
 
   return (
     <div className="min-h-screen bg-[#F9FAFB] dark:bg-black text-gray-900 dark:text-[#FAFAFA] font-sans relative overflow-hidden selection:bg-blue-500/20 dark:selection:bg-cyan-500/30 selection:text-blue-900 dark:selection:text-cyan-100 transition-colors duration-500">
@@ -79,13 +83,13 @@ const App: React.FC = () => {
         <div className="absolute inset-0 bg-perspective-grid mix-blend-multiply dark:mix-blend-screen opacity-40 dark:opacity-20" />
         
         {/* Soft Mouse Spotlight (Light) / Intense Spotlight (Dark) */}
-        <div 
+        <motion.div 
           className="absolute w-[1000px] h-[1000px] rounded-full transition-transform duration-500 ease-out pointer-events-none mix-blend-multiply dark:mix-blend-normal"
           style={{ 
             background: theme === 'dark' 
               ? 'radial-gradient(circle, rgba(0,255,255,0.15) 0%, rgba(255,0,255,0.1) 40%, transparent 70%)'
               : 'radial-gradient(circle, rgba(99,102,241,0.05) 0%, rgba(59,130,246,0.03) 40%, transparent 70%)',
-            transform: `translate(${mousePos.x - 500}px, ${mousePos.y - 500}px)` 
+            transform: spotlightTransform 
           }}
         />
         
