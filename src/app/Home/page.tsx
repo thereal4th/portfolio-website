@@ -3,7 +3,7 @@
 import { GithubIcon, LinkedinIcon } from "@/src/components/ui/CustomIcons";
 import PORTFOLIO_DATA from "@/src/data/PortfolioData";
 import { ArrowRight, Mail } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, Variants } from "framer-motion";
 import MagneticElement from "@/src/components/MagneticElement";
 
 type Page = 'home' | 'projects' | 'about' | 'contact';
@@ -40,7 +40,7 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
   const { scrollYProgress } = useScroll();
   const marqueeX = useTransform(scrollYProgress, [0, 1], [0, -2000]);
   
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
@@ -48,7 +48,7 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 50, filter: "blur(20px)", scale: 0.8 },
     show: { opacity: 1, y: 0, filter: "blur(0px)", scale: 1, transition: { type: "spring", damping: 20, stiffness: 100 } }
   };
