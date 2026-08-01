@@ -175,9 +175,9 @@ const App: React.FC = () => {
         />
         
         {/* Ambient Orbs - Optimized without expensive CSS blur */}
-        <div className="absolute top-[-20%] left-[-20%] w-[80vw] h-[80vh] rounded-full animate-ambient-1 mix-blend-multiply dark:mix-blend-screen" style={{ background: 'radial-gradient(circle, rgba(191, 219, 254, 0.4) 0%, transparent 60%)' }} />
-        <div className="absolute bottom-[-20%] right-[-20%] w-[70vw] h-[70vh] rounded-full animate-ambient-2 mix-blend-multiply dark:mix-blend-screen" style={{ background: 'radial-gradient(circle, rgba(199, 210, 254, 0.4) 0%, transparent 60%)' }} />
-        <div className="absolute top-[30%] right-[30%] w-[60vw] h-[60vh] rounded-full animate-ambient-3 mix-blend-multiply dark:mix-blend-screen" style={{ background: 'radial-gradient(circle, rgba(221, 214, 254, 0.4) 0%, transparent 60%)' }} />
+        <div className="absolute top-[-20%] left-[-20%] w-[80vw] h-[80vh] rounded-full animate-ambient-1 mix-blend-multiply dark:hidden" style={{ background: 'radial-gradient(circle, rgba(191, 219, 254, 0.4) 0%, transparent 60%)' }} />
+        <div className="absolute bottom-[-20%] right-[-20%] w-[70vw] h-[70vh] rounded-full animate-ambient-2 mix-blend-multiply dark:hidden" style={{ background: 'radial-gradient(circle, rgba(199, 210, 254, 0.4) 0%, transparent 60%)' }} />
+        <div className="absolute top-[30%] right-[30%] w-[60vw] h-[60vh] rounded-full animate-ambient-3 mix-blend-multiply dark:hidden" style={{ background: 'radial-gradient(circle, rgba(221, 214, 254, 0.4) 0%, transparent 60%)' }} />
         
         {/* Noise Overlay */}
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.4] dark:opacity-30 mix-blend-overlay"></div>
