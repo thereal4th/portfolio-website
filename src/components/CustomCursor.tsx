@@ -42,7 +42,7 @@ export default function CustomCursor() {
     <>
       <style dangerouslySetInnerHTML={{__html: `body { cursor: none; }`}} />
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-white/50 pointer-events-none z-[9999] mix-blend-difference flex items-center justify-center will-change-transform"
+        className="fixed top-0 left-0 w-8 h-8 rounded-full border-[1.5px] border-white pointer-events-none z-[9999] mix-blend-difference flex items-center justify-center will-change-transform"
         style={{
           x: cursorX,
           y: cursorY,
@@ -52,13 +52,6 @@ export default function CustomCursor() {
           backgroundColor: isHovered ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0)',
         }}
         transition={{ duration: 0.2 }}
-      />
-      <motion.div
-        className="fixed top-0 left-0 w-2 h-2 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference will-change-transform"
-        style={{
-          x: useSpring(cursorX, { stiffness: 1000, damping: 28, mass: 0.1 }),
-          y: useSpring(cursorY, { stiffness: 1000, damping: 28, mass: 0.1 }),
-        }}
       />
     </>
   );
