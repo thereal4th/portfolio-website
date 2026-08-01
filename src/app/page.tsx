@@ -85,8 +85,9 @@ const App: React.FC = () => {
 
       const currentIndex = pageOrder.indexOf(activePage);
       
-      const isAtBottom = Math.ceil(container.scrollTop + container.clientHeight) >= container.scrollHeight - 1;
-      const isAtTop = container.scrollTop <= 0;
+      const progress = globalScrollYProgress.get();
+      const isAtBottom = progress >= 0.99;
+      const isAtTop = progress <= 0.01;
 
       // Accumulate scroll intent if we are hitting a boundary
       if (e.deltaY > 0 && isAtBottom) {
@@ -164,7 +165,7 @@ const App: React.FC = () => {
         
         {/* Soft Mouse Spotlight (Light) / Intense Spotlight (Dark) */}
         <motion.div 
-          className="absolute w-[1000px] h-[1000px] rounded-full transition-transform duration-500 ease-out pointer-events-none mix-blend-multiply dark:mix-blend-normal"
+          className="absolute w-[1000px] h-[1000px] rounded-full pointer-events-none mix-blend-multiply dark:mix-blend-normal will-change-transform"
           style={{ 
             background: theme === 'dark' 
               ? 'radial-gradient(circle, rgba(0,255,255,0.15) 0%, rgba(255,0,255,0.1) 40%, transparent 70%)'
@@ -173,10 +174,10 @@ const App: React.FC = () => {
           }}
         />
         
-        {/* Ambient Orbs */}
-        <div className="absolute top-[-20%] left-[-20%] w-[80vw] h-[80vh] bg-blue-200/40 dark:bg-cyan-500/20 rounded-full blur-[150px] animate-ambient-1 mix-blend-multiply dark:mix-blend-screen" />
-        <div className="absolute bottom-[-20%] right-[-20%] w-[70vw] h-[70vh] bg-indigo-200/40 dark:bg-fuchsia-600/20 rounded-full blur-[150px] animate-ambient-2 mix-blend-multiply dark:mix-blend-screen" />
-        <div className="absolute top-[30%] right-[30%] w-[60vw] h-[60vh] bg-violet-200/40 dark:bg-blue-600/20 rounded-full blur-[150px] animate-ambient-3 mix-blend-multiply dark:mix-blend-screen" />
+        {/* Ambient Orbs - Optimized without expensive CSS blur */}
+        <div className="absolute top-[-20%] left-[-20%] w-[80vw] h-[80vh] rounded-full animate-ambient-1 mix-blend-multiply dark:hidden" style={{ background: 'radial-gradient(circle, rgba(191, 219, 254, 0.4) 0%, transparent 60%)' }} />
+        <div className="absolute bottom-[-20%] right-[-20%] w-[70vw] h-[70vh] rounded-full animate-ambient-2 mix-blend-multiply dark:hidden" style={{ background: 'radial-gradient(circle, rgba(199, 210, 254, 0.4) 0%, transparent 60%)' }} />
+        <div className="absolute top-[30%] right-[30%] w-[60vw] h-[60vh] rounded-full animate-ambient-3 mix-blend-multiply dark:hidden" style={{ background: 'radial-gradient(circle, rgba(221, 214, 254, 0.4) 0%, transparent 60%)' }} />
         
         {/* Noise Overlay */}
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.4] dark:opacity-30 mix-blend-overlay"></div>
@@ -200,7 +201,7 @@ const App: React.FC = () => {
                 className="absolute inset-0 w-full h-full bg-transparent rounded-b-[40px] border-b border-gray-200/50 dark:border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.15)] dark:shadow-[0_30px_80px_rgba(0,0,0,0.6)] overflow-y-auto scroll-smooth"
               >
                 <div className="min-h-full flex flex-col justify-center">
-                  <Home setActivePage={handleNavClick} />
+                  <Home setActivePage={handleNavClick} scrollYProgress={globalScrollYProgress} />
                 </div>
               </motion.div>
             )}

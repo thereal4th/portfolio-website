@@ -3,13 +3,14 @@
 import { GithubIcon, LinkedinIcon } from "@/src/components/ui/CustomIcons";
 import PORTFOLIO_DATA from "@/src/data/PortfolioData";
 import { ArrowRight, Mail } from "lucide-react";
-import { motion, useScroll, useTransform, Variants } from "framer-motion";
+import { motion, useScroll, useTransform, Variants, useMotionValue } from "framer-motion";
 import MagneticElement from "@/src/components/MagneticElement";
 
 type Page = 'home' | 'projects' | 'about' | 'contact';
 
 interface HeroProps {
-  setActivePage: (page: Page) => void;
+  setActivePage?: (page: Page) => void;
+  scrollYProgress?: import('framer-motion').MotionValue<number>;
 }
 
 const LetterPullUp = ({ text, delay = 0 }: { text: string, delay?: number }) => {
@@ -36,9 +37,10 @@ const LetterPullUp = ({ text, delay = 0 }: { text: string, delay?: number }) => 
   );
 };
 
-const Home: React.FC<HeroProps> = ({ setActivePage }) => {
-  const { scrollYProgress } = useScroll();
-  const marqueeX = useTransform(scrollYProgress, [0, 1], [0, -2000]);
+const Home: React.FC<HeroProps> = ({ setActivePage, scrollYProgress }) => {
+  const fallbackScrollYProgress = useMotionValue(0);
+  const activeScroll = scrollYProgress || fallbackScrollYProgress;
+  const marqueeX = useTransform(activeScroll, [0, 1], [0, -2000]);
   
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -87,7 +89,7 @@ const Home: React.FC<HeroProps> = ({ setActivePage }) => {
             
             <MagneticElement>
               <button 
-                onClick={() => setActivePage('projects')}
+                onClick={() => setActivePage?.('projects')}
                 className="group flex items-center gap-3 px-10 py-5 bg-gray-900 dark:bg-white text-white dark:text-black rounded-full font-black text-xl shadow-[0_10px_30px_rgba(0,0,0,0.15)] dark:shadow-[0_0_60px_rgba(255,255,255,0.6)] hover:bg-black dark:hover:bg-black dark:hover:text-white dark:hover:border dark:hover:border-white hover:scale-105 transition-all"
               >
                 EXPLORE WORK
