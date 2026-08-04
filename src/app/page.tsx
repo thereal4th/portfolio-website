@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react';
-import { AnimatePresence, motion, useScroll, useTransform, useMotionValue, useMotionTemplate, Variants } from 'framer-motion';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, useScroll, useTransform, useMotionValue, useMotionTemplate, type MotionValue } from 'framer-motion';
 import dynamic from 'next/dynamic';
 
 import Navigation from '../components/Navigation';
@@ -43,20 +43,10 @@ const BackgroundGeometry = ({ scrollYProgress }: { scrollYProgress: import('fram
 const App: React.FC = () => {
   const [activePage, setActivePage] = useState<Page>('home');
   const [theme, setTheme] = useState<Theme>('light');
-  const [direction, setDirection] = useState(1);
-  const [isScrolling, setIsScrolling] = useState(false);
-
+  
+  const { scrollYProgress } = useScroll();
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const overscrollDelta = useRef(0);
-  const globalScrollYProgress = useMotionValue(0);
-
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const target = e.currentTarget;
-    const scrollHeight = target.scrollHeight - target.clientHeight;
-    const progress = scrollHeight > 0 ? target.scrollTop / scrollHeight : 0;
-    globalScrollYProgress.set(progress);
-  };
 
   useEffect(() => {
     const root = document.documentElement;
@@ -77,86 +67,33 @@ const App: React.FC = () => {
   }, [mouseX, mouseY]);
 
   useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
-      if (isScrolling) return;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActivePage(entry.target.id as Page);
+        }
+      });
+    }, { threshold: 0.3 });
 
-      const container = document.getElementById('active-scroll-container');
-      if (!container) return;
+    pageOrder.forEach((page) => {
+      const el = document.getElementById(page);
+      if (el) observer.observe(el);
+    });
 
-      const currentIndex = pageOrder.indexOf(activePage);
-      
-      const progress = globalScrollYProgress.get();
-      const isAtBottom = progress >= 0.99;
-      const isAtTop = progress <= 0.01;
+    return () => observer.disconnect();
+  }, []);
 
-      // Accumulate scroll intent if we are hitting a boundary
-      if (e.deltaY > 0 && isAtBottom) {
-        overscrollDelta.current += e.deltaY;
-      } else if (e.deltaY < 0 && isAtTop) {
-        overscrollDelta.current += e.deltaY; // will be negative
-      } else {
-        // Reset if we are scrolling normally in the middle of the container
-        overscrollDelta.current = 0;
-      }
-
-      // Threshold required to trigger page transition (prevents accidental jumps)
-      const OVERSCROLL_THRESHOLD = 150;
-
-      if (overscrollDelta.current > OVERSCROLL_THRESHOLD && currentIndex < pageOrder.length - 1) {
-        setDirection(1);
-        setActivePage(pageOrder[currentIndex + 1]);
-        overscrollDelta.current = 0;
-        setIsScrolling(true);
-        setTimeout(() => setIsScrolling(false), 1200);
-      } else if (overscrollDelta.current < -OVERSCROLL_THRESHOLD && currentIndex > 0) {
-        setDirection(-1);
-        setActivePage(pageOrder[currentIndex - 1]);
-        overscrollDelta.current = 0;
-        setIsScrolling(true);
-        setTimeout(() => setIsScrolling(false), 1200);
-      }
-    };
-
-    window.addEventListener('wheel', handleWheel, { passive: true });
-    return () => window.removeEventListener('wheel', handleWheel);
-  }, [activePage, isScrolling]);
-
-  const handleNavClick = (page: Page) => {
-    const currentIndex = pageOrder.indexOf(activePage);
-    const targetIndex = pageOrder.indexOf(page);
-    if (currentIndex === targetIndex) return;
-    
-    setDirection(targetIndex > currentIndex ? 1 : -1);
-    setActivePage(page);
-  };
-
-  const pageVariants: Variants = {
-    initial: (dir: number) => ({
-      y: dir === 1 ? '50%' : '-100%',
-      scale: dir === 1 ? 0.8 : 1,
-      opacity: 0,
-      zIndex: dir === 1 ? 1 : 10
-    }),
-    animate: {
-      y: '0%',
-      scale: 1,
-      opacity: 1,
-      zIndex: 5,
-      transition: { type: 'spring', stiffness: 70, damping: 20, mass: 1 }
-    },
-    exit: (dir: number) => ({
-      y: dir === 1 ? '-100%' : '50%',
-      scale: dir === 1 ? 1 : 0.8,
-      opacity: dir === 1 ? 1 : 0,
-      zIndex: dir === 1 ? 10 : 1,
-      transition: { type: 'spring', stiffness: 70, damping: 20, mass: 1 }
-    })
-  };
+  const goToPage = useCallback((page: Page) => {
+    const el = document.getElementById(page);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
 
   const spotlightTransform = useMotionTemplate`translate(calc(${mouseX}px - 500px), calc(${mouseY}px - 500px))`;
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-[#F9FAFB] dark:bg-black text-gray-900 dark:text-[#FAFAFA] font-sans relative selection:bg-blue-500/20 dark:selection:bg-cyan-500/30 selection:text-blue-900 dark:selection:text-cyan-100 transition-colors duration-500">
+    <div className="min-h-screen w-full bg-[#F9FAFB] dark:bg-black text-gray-900 dark:text-[#FAFAFA] font-sans relative selection:bg-blue-500/20 dark:selection:bg-cyan-500/30 selection:text-blue-900 dark:selection:text-cyan-100 transition-colors duration-500">
       
       {/* Dynamic Background */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
@@ -183,82 +120,28 @@ const App: React.FC = () => {
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.4] dark:opacity-30 mix-blend-overlay"></div>
       </div>
 
-      <BackgroundGeometry scrollYProgress={globalScrollYProgress} />
+      <BackgroundGeometry scrollYProgress={scrollYProgress} />
 
-      <div className="relative z-10 w-full h-full flex items-center justify-center">
-        <main className="w-full h-full relative perspective-[2000px]">
-          <AnimatePresence custom={direction} mode="sync">
-            {activePage === 'home' && (
-              <motion.div 
-                id="active-scroll-container"
-                key="home" 
-                custom={direction}
-                variants={pageVariants} 
-                initial="initial" 
-                animate="animate" 
-                exit="exit" 
-                onScroll={handleScroll}
-                className="absolute inset-0 w-full h-full bg-transparent rounded-b-[40px] border-b border-gray-200/50 dark:border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.15)] dark:shadow-[0_30px_80px_rgba(0,0,0,0.6)] overflow-y-auto scroll-smooth"
-              >
-                <div className="min-h-full flex flex-col justify-center">
-                  <Home setActivePage={handleNavClick} scrollYProgress={globalScrollYProgress} />
-                </div>
-              </motion.div>
-            )}
-            
-            {activePage === 'projects' && (
-              <motion.div 
-                id="active-scroll-container"
-                key="projects" 
-                custom={direction}
-                variants={pageVariants} 
-                initial="initial" 
-                animate="animate" 
-                exit="exit" 
-                onScroll={handleScroll}
-                className="absolute inset-0 w-full h-full bg-transparent rounded-b-[40px] border-b border-gray-200/50 dark:border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.15)] dark:shadow-[0_30px_80px_rgba(0,0,0,0.6)] overflow-y-auto scroll-smooth pt-20"
-              >
-                <Projects />
-              </motion.div>
-            )}
-            
-            {activePage === 'about' && (
-              <motion.div 
-                id="active-scroll-container"
-                key="about" 
-                custom={direction}
-                variants={pageVariants} 
-                initial="initial" 
-                animate="animate" 
-                exit="exit" 
-                onScroll={handleScroll}
-                className="absolute inset-0 w-full h-full bg-transparent rounded-b-[40px] border-b border-gray-200/50 dark:border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.15)] dark:shadow-[0_30px_80px_rgba(0,0,0,0.6)] overflow-y-auto scroll-smooth pt-20"
-              >
-                <About />
-              </motion.div>
-            )}
-            
-            {activePage === 'contact' && (
-              <motion.div 
-                id="active-scroll-container"
-                key="contact" 
-                custom={direction}
-                variants={pageVariants} 
-                initial="initial" 
-                animate="animate" 
-                exit="exit" 
-                onScroll={handleScroll}
-                className="absolute inset-0 w-full h-full bg-transparent shadow-[0_30px_80px_rgba(0,0,0,0.15)] dark:shadow-[0_30px_80px_rgba(0,0,0,0.6)] overflow-y-auto scroll-smooth pt-20"
-              >
-                <div className="min-h-full flex flex-col justify-center">
-                  <Contact />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+      <div className="relative z-10 w-full">
+        <main className="w-full flex flex-col">
+          <section id="home" className="min-h-screen flex flex-col justify-center border-b border-gray-200/50 dark:border-white/10">
+            <Home setActivePage={goToPage} scrollYProgress={scrollYProgress} />
+          </section>
+          
+          <section id="projects" className="min-h-screen pt-20 pb-20 border-b border-gray-200/50 dark:border-white/10">
+            <Projects />
+          </section>
+
+          <section id="about" className="min-h-screen pt-20 pb-20 border-b border-gray-200/50 dark:border-white/10">
+            <About />
+          </section>
+
+          <section id="contact" className="min-h-screen pt-20 flex flex-col justify-center">
+            <Contact />
+          </section>
         </main>
 
-        <Navigation activePage={activePage} setActivePage={handleNavClick} theme={theme} setTheme={setTheme} />
+        <Navigation activePage={activePage} setActivePage={goToPage} theme={theme} setTheme={setTheme} />
         
         <ChatWidget />
         <CustomCursor />
