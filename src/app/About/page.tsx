@@ -38,12 +38,12 @@ const About: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
         <motion.div variants={itemVariants} className="md:col-span-7 space-y-6 text-gray-500 dark:text-white/50 text-xl font-light leading-relaxed">
           <p>
-            Hello. I'm <span className="text-gray-900 dark:text-white font-medium">{PORTFOLIO_DATA.name}</span>, operating under the alias <span className="text-gray-900 dark:text-white font-bold">{PORTFOLIO_DATA.nickname}</span>. 
+            Hello. I'm <span className="text-gray-900 dark:text-white font-medium">{PORTFOLIO_DATA.name}</span>, but you can call me <span className="text-gray-900 dark:text-white font-bold">{PORTFOLIO_DATA.nickname}</span>. 
             I focus on creating robust systems and seamless digital experiences as a <span className="text-gray-900 dark:text-white font-medium">{PORTFOLIO_DATA.role}</span>.
           </p>
           <p>
             My engineering philosophy centers around performance, simplicity, and attention to detail.
-            Outside the digital realm, I've spent a decade mastering the piano and actively train in BJJ.
+            Outside of software development, I've spent a decade mastering the piano and actively train in BJJ.
           </p>
         </motion.div>
         
