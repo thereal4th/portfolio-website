@@ -1,17 +1,17 @@
 'use client'
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, useScroll, useTransform, useMotionValue, useMotionTemplate, type MotionValue } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from 'react';
+import { motion, useScroll, useTransform, useMotionValue, useMotionTemplate } from 'framer-motion';
 import dynamic from 'next/dynamic';
 
 import Navigation from '../components/Navigation';
-import Home from './Home/page';
+import Home from '../sections/home';
 import ChatWidget from '../components/Chatwidget';
 import CustomCursor from '../components/CustomCursor';
 
-const Projects = dynamic(() => import('./Projects/page'));
-const About = dynamic(() => import('./About/page'));
-const Contact = dynamic(() => import('./Contact/page'));
+const Projects = dynamic(() => import('../sections/projects'));
+const About = dynamic(() => import('../sections/about'));
+const Contact = dynamic(() => import('../sections/contact'));
 
 type Page = 'home' | 'projects' | 'about' | 'contact';
 export type Theme = 'light' | 'dark';
@@ -73,7 +73,7 @@ const App: React.FC = () => {
           setActivePage(entry.target.id as Page);
         }
       });
-    }, { threshold: 0.3 });
+    }, { threshold: 0.15 });
 
     pageOrder.forEach((page) => {
       const el = document.getElementById(page);
@@ -84,6 +84,7 @@ const App: React.FC = () => {
   }, []);
 
   const goToPage = useCallback((page: Page) => {
+    setActivePage(page);
     const el = document.getElementById(page);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
