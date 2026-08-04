@@ -38,10 +38,6 @@ const LetterPullUp = ({ text, delay = 0 }: { text: string, delay?: number }) => 
 };
 
 const Home: React.FC<HeroProps> = ({ setActivePage, scrollYProgress }) => {
-  const fallbackScrollYProgress = useMotionValue(0);
-  const activeScroll = scrollYProgress || fallbackScrollYProgress;
-  const marqueeX = useTransform(activeScroll, [0, 1], [0, -2000]);
-  
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     show: {
@@ -100,12 +96,18 @@ const Home: React.FC<HeroProps> = ({ setActivePage, scrollYProgress }) => {
         </motion.div>
       </div>
 
-      {/* Massive Scroll Marquee */}
-      <div className="mt-32 pb-10 overflow-hidden w-full select-none pointer-events-none border-y border-gray-200 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-md">
-        <motion.div style={{ x: marqueeX }} className="flex whitespace-nowrap">
-          <h2 className="text-[15vw] font-black tracking-tighter uppercase leading-none text-transparent bg-clip-text bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-violet-600/10 dark:from-cyan-500/50 dark:via-fuchsia-500/50 dark:to-yellow-500/50">
-            {PORTFOLIO_DATA.role} {PORTFOLIO_DATA.role}
-          </h2>
+      {/* Massive Auto Marquee */}
+      <div className="mt-32 pb-10 overflow-hidden w-full select-none pointer-events-none border-y border-gray-200 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-md flex">
+        <motion.div 
+          animate={{ x: ["0%", "-50%"] }} 
+          transition={{ ease: "linear", duration: 25, repeat: Infinity }} 
+          className="flex whitespace-nowrap w-max"
+        >
+          {Array(10).fill(PORTFOLIO_DATA.role).map((role, i) => (
+            <h2 key={i} className="text-[15vw] font-black tracking-tighter uppercase leading-none text-transparent bg-clip-text bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-violet-600/10 dark:from-cyan-500/50 dark:via-fuchsia-500/50 dark:to-yellow-500/50 pr-8">
+              {role}
+            </h2>
+          ))}
         </motion.div>
       </div>
       

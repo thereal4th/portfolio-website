@@ -39,7 +39,7 @@ const Contact: React.FC = () => {
       >
         
         <motion.div variants={itemVariants} className="mb-20 text-center">
-          <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-gray-900 dark:text-white mb-6">Initialize Contact</h2>
+          <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-gray-900 dark:text-white mb-6">Contact Me</h2>
           <p className="text-gray-500 dark:text-white/50 text-xl font-light">
             I'm currently open for new opportunities. Let's build something exceptional.
           </p>
