@@ -21,7 +21,8 @@ const About: React.FC = () => {
     <motion.div 
       variants={containerVariants}
       initial="hidden"
-      animate="show"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.1 }}
       className="max-w-4xl mx-auto px-6 lg:px-12 py-12 relative z-10"
     >
       
@@ -29,7 +30,8 @@ const About: React.FC = () => {
         <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-gray-900 dark:text-white mb-4">About Me</h2>
         <motion.div 
           initial={{ width: 0 }} 
-          animate={{ width: 96 }} 
+          whileInView={{ width: 96 }} 
+          viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.5 }} 
           className="h-1 bg-gray-200 dark:bg-white/20 rounded-full" 
         />
@@ -37,14 +39,14 @@ const About: React.FC = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
         <motion.div variants={itemVariants} className="md:col-span-7 space-y-6 text-gray-500 dark:text-white/50 text-xl font-light leading-relaxed">
-          <p>
+          <motion.p variants={itemVariants}>
             Hello. I'm <span className="text-gray-900 dark:text-white font-medium">{PORTFOLIO_DATA.name}</span>, but you can call me <span className="text-gray-900 dark:text-white font-bold">{PORTFOLIO_DATA.nickname}</span>. 
             I focus on creating robust systems and seamless digital experiences as a <span className="text-gray-900 dark:text-white font-medium">{PORTFOLIO_DATA.role}</span>.
-          </p>
-          <p>
+          </motion.p>
+          <motion.p variants={itemVariants}>
             My engineering philosophy centers around performance, simplicity, and attention to detail.
             Outside of software development, I've spent a decade mastering the piano and actively train in BJJ.
-          </p>
+          </motion.p>
         </motion.div>
         
         <motion.div 
@@ -71,7 +73,13 @@ const About: React.FC = () => {
         </motion.div>
       </div>
 
-      <motion.div variants={itemVariants} className="mt-32">
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="mt-32"
+      >
         <h3 className="text-2xl font-bold tracking-wider uppercase text-gray-400 dark:text-white/40 mb-12">Trajectory</h3>
         <div className="space-y-12">
           {PORTFOLIO_DATA.experience.map((item, index) => (
