@@ -1,154 +1,761 @@
 'use client'
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, useScroll, useTransform, useMotionValue, useMotionTemplate } from 'framer-motion';
-import dynamic from 'next/dynamic';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { Sun, Moon } from 'lucide-react';
+import PORTFOLIO_DATA from '../data/PortfolioData';
 
-import Navigation from '../components/Navigation';
-import Home from '../sections/home';
-import ChatWidget from '../components/Chatwidget';
-import CustomCursor from '../components/CustomCursor';
-
-const Projects = dynamic(() => import('../sections/projects'));
-const About = dynamic(() => import('../sections/about'));
-const Contact = dynamic(() => import('../sections/contact'));
-
-type Page = 'home' | 'projects' | 'about' | 'contact';
 export type Theme = 'light' | 'dark';
 
-const pageOrder: Page[] = ['home', 'projects', 'about', 'contact'];
-
-const BackgroundGeometry = ({ scrollYProgress }: { scrollYProgress: import('framer-motion').MotionValue<number> }) => {
-
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, -2000]);
-  const rotate1 = useTransform(scrollYProgress, [0, 1], [0, 720]);
-
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, 2500]);
-  const rotate2 = useTransform(scrollYProgress, [0, 1], [45, -1080]);
-
-  return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden mix-blend-multiply dark:mix-blend-screen opacity-50 dark:opacity-70">
-      <motion.div
-        style={{ y: y1, rotate: rotate1 }}
-        className="absolute top-[20%] left-[5%] w-64 h-64 border-2 border-blue-200/50 dark:border-cyan-500/30 rounded-3xl dark:drop-shadow-[0_0_50px_rgba(0,255,255,0.3)] will-change-transform"
-      />
-      <motion.div
-        style={{ y: y2, rotate: rotate2 }}
-        className="absolute top-[50%] right-[5%] w-0 h-0 border-l-[100px] border-l-transparent border-r-[100px] border-r-transparent border-b-[170px] border-b-indigo-200/50 dark:border-b-fuchsia-500/30 dark:drop-shadow-[0_0_50px_rgba(255,0,255,0.3)] will-change-transform"
-      />
-    </div>
-  );
-};
-
-const App: React.FC = () => {
-  const [activePage, setActivePage] = useState<Page>('home');
-  const [theme, setTheme] = useState<Theme>('light');
-  
-  const { scrollYProgress } = useScroll();
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+export default function Home() {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    const root = document.documentElement;
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
+    setIsClient(true);
+    if (document.documentElement.classList.contains('dark')) {
+      setTheme('dark');
     }
-  }, [theme]);
+  }, []);
+
+  const toggleTheme = () => {
+    if (theme === 'light') {
+      document.documentElement.classList.add('dark');
+      setTheme('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      setTheme('light');
+    }
+  };
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
-    };
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [mouseX, mouseY]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
-          setActivePage(entry.target.id as Page);
+          entry.target.classList.add('is-revealed');
+          obs.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
 
-    pageOrder.forEach((page) => {
-      const el = document.getElementById(page);
-      if (el) observer.observe(el);
-    });
-
+    revealElements.forEach(el => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [isClient]);
 
-  const goToPage = useCallback((page: Page) => {
-    setActivePage(page);
-    const el = document.getElementById(page);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, []);
-
-  const spotlightTransform = useMotionTemplate`translate(calc(${mouseX}px - 500px), calc(${mouseY}px - 500px))`;
+  const isDark = theme === 'dark';
 
   return (
-    <div className="min-h-screen w-full bg-[#F9FAFB] dark:bg-black text-gray-900 dark:text-[#FAFAFA] font-sans relative selection:bg-blue-500/20 dark:selection:bg-cyan-500/30 selection:text-blue-900 dark:selection:text-cyan-100 transition-colors duration-500">
-      
-      {/* Dynamic Background */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        {/* Perspective Grid */}
-        <div className="absolute inset-0 bg-perspective-grid mix-blend-multiply dark:mix-blend-screen opacity-40 dark:opacity-20" />
-        
-        {/* Soft Mouse Spotlight (Light) / Intense Spotlight (Dark) */}
-        <motion.div 
-          className="absolute w-[1000px] h-[1000px] rounded-full pointer-events-none mix-blend-multiply dark:mix-blend-normal will-change-transform"
-          style={{ 
-            background: theme === 'dark' 
-              ? 'radial-gradient(circle, rgba(0,255,255,0.15) 0%, rgba(255,0,255,0.1) 40%, transparent 70%)'
-              : 'radial-gradient(circle, rgba(99,102,241,0.05) 0%, rgba(59,130,246,0.03) 40%, transparent 70%)',
-            transform: spotlightTransform 
+    <div
+      className="min-h-screen"
+      style={{
+        backgroundColor: isDark ? '#0a0a0a' : '#f4efe8',
+        color: isDark ? '#e5e5e5' : '#252e1f',
+        transition: 'background-color 1.5s ease-in-out, color 1.5s ease-in-out',
+      }}
+    >
+      <DreamParticles isDark={isDark} />
+      <HeroSection theme={theme} toggleTheme={toggleTheme} />
+
+      <main
+        style={{
+          position: 'relative',
+          zIndex: 2,
+          paddingTop: '2rem',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: -1,
+            background: 'linear-gradient(180deg, rgba(250,245,237,1) 0%, rgba(250,245,237,0.82) 15%, rgba(250,245,237,0.76) 100%)',
+            backdropFilter: 'blur(18px) saturate(145%)',
+            WebkitBackdropFilter: 'blur(18px) saturate(145%)',
+            opacity: isDark ? 0 : 1,
+            transition: 'opacity 1.5s ease-in-out',
+          }}
+          aria-hidden="true"
+        />
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: -1,
+            background: 'rgba(0, 0, 0, 0.85)',
+            opacity: isDark ? 1 : 0,
+            transition: 'opacity 1.5s ease-in-out',
+          }}
+          aria-hidden="true"
+        />
+        <ProjectsSection isDark={isDark} />
+        <ExperienceSection isDark={isDark} />
+        <ConnectSection isDark={isDark} />
+      </main>
+
+      <Footer isDark={isDark} />
+    </div>
+  );
+}
+
+/* ========== Dream Particles ========== */
+const DreamParticles = ({ isDark }: { isDark: boolean }) => {
+  const [motes, setMotes] = useState<any[]>([]);
+
+  useEffect(() => {
+    const MOTE_COUNT = 5;
+    const newMotes = Array.from({ length: MOTE_COUNT }).map((_, i) => {
+      const size = Math.floor(Math.random() * 3) + 3;
+      const leftPos = Math.random() * 92 + 4;
+      const duration = Math.random() * 12 + 14;
+      const delay = Math.random() * 8;
+      const maxOpacity = (Math.random() * 0.08 + 0.12).toFixed(2);
+      return { id: i, size, leftPos, duration, delay, maxOpacity };
+    });
+    setMotes(newMotes);
+  }, []);
+
+  return (
+    <div id="dream-particles-container" aria-hidden="true" style={{ opacity: isDark ? 0.3 : 1, transition: 'opacity 1.2s ease' }}>
+      {motes.map((mote) => (
+        <div
+          key={mote.id}
+          className="dream-mote"
+          style={{
+            width: `${mote.size}px`,
+            height: `${mote.size}px`,
+            left: `${mote.leftPos}%`,
+            animationDelay: `${mote.delay}s`,
+            ['--float-duration' as string]: `${mote.duration}s`,
+            ['--max-opacity' as string]: mote.maxOpacity,
           }}
         />
-        
-        {/* Ambient Orbs - Optimized without expensive CSS blur */}
-        <div className="absolute top-[-20%] left-[-20%] w-[80vw] h-[80vh] rounded-full animate-ambient-1 mix-blend-multiply dark:hidden" style={{ background: 'radial-gradient(circle, rgba(191, 219, 254, 0.4) 0%, transparent 60%)' }} />
-        <div className="absolute bottom-[-20%] right-[-20%] w-[70vw] h-[70vh] rounded-full animate-ambient-2 mix-blend-multiply dark:hidden" style={{ background: 'radial-gradient(circle, rgba(199, 210, 254, 0.4) 0%, transparent 60%)' }} />
-        <div className="absolute top-[30%] right-[30%] w-[60vw] h-[60vh] rounded-full animate-ambient-3 mix-blend-multiply dark:hidden" style={{ background: 'radial-gradient(circle, rgba(221, 214, 254, 0.4) 0%, transparent 60%)' }} />
-        
-        {/* Noise Overlay */}
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.4] dark:opacity-30 mix-blend-overlay"></div>
-      </div>
-
-      <BackgroundGeometry scrollYProgress={scrollYProgress} />
-
-      <div className="relative z-10 w-full">
-        <main className="w-full flex flex-col">
-          <section id="home" className="min-h-screen flex flex-col justify-center border-b border-gray-200/50 dark:border-white/10">
-            <Home setActivePage={goToPage} scrollYProgress={scrollYProgress} />
-          </section>
-          
-          <section id="projects" className="min-h-screen pt-20 pb-20 border-b border-gray-200/50 dark:border-white/10">
-            <Projects />
-          </section>
-
-          <section id="about" className="min-h-screen pt-20 pb-20 border-b border-gray-200/50 dark:border-white/10">
-            <About />
-          </section>
-
-          <section id="contact" className="min-h-screen pt-20 flex flex-col justify-center">
-            <Contact />
-          </section>
-        </main>
-
-        <Navigation activePage={activePage} setActivePage={goToPage} theme={theme} setTheme={setTheme} />
-        
-        <ChatWidget />
-        <CustomCursor />
-      </div>
+      ))}
     </div>
   );
 };
 
-export default App;
+/* ========== Hero Section ========== */
+const HeroSection = ({ theme, toggleTheme }: { theme: string; toggleTheme: () => void }) => {
+  const isDark = theme === 'dark';
+
+  return (
+    <section
+      id="hero"
+      className="relative w-full h-screen overflow-hidden"
+      style={{
+        backgroundColor: isDark ? '#0a0a0a' : '#f4efe8',
+        transition: 'background-color 1.5s ease-in-out',
+      }}
+    >
+      {/* Background Videos - both always mounted, crossfade via opacity */}
+      <div className="video-background-wrapper">
+        <video
+          autoPlay muted loop playsInline
+          className="seamless-video"
+          style={{
+            position: 'fixed', top: 0, left: 0,
+            width: '100vw', height: '100vh',
+            objectFit: 'fill',
+            pointerEvents: 'none',
+            opacity: isDark ? 0 : 1,
+            filter: 'sepia(0.12) saturate(1.15) contrast(0.92) brightness(1.04)',
+            transition: 'opacity 1.5s ease-in-out',
+            zIndex: -2,
+          }}
+          src="TrainScenery.mp4"
+        />
+        <video
+          autoPlay muted loop playsInline
+          className="seamless-video"
+          style={{
+            position: 'fixed', top: 0, left: 0,
+            width: '100vw', height: '100vh',
+            objectFit: 'fill',
+            pointerEvents: 'none',
+            opacity: isDark ? 0.4 : 0,
+            filter: 'none',
+            transition: 'opacity 1.5s ease-in-out',
+            zIndex: -1,
+          }}
+          src="TrainSceneryDarkMode.mp4"
+        />
+
+        <div
+          className="dream-cinema-overlay"
+          style={{ opacity: isDark ? 0 : 0.4, transition: 'opacity 1.2s ease' }}
+          aria-hidden="true"
+        />
+        <div className="mobile-readability-overlay" aria-hidden="true" />
+        <div
+          className="video-bottom-dissolve"
+          style={{
+            opacity: isDark ? 0 : 1,
+            transition: 'opacity 1.5s ease-in-out',
+          }}
+          aria-hidden="true"
+        />
+        <div
+          className="video-bottom-dissolve"
+          style={{
+            background: 'linear-gradient(180deg, transparent 0%, #0a0a0a 100%)',
+            opacity: isDark ? 1 : 0,
+            transition: 'opacity 1.5s ease-in-out',
+          }}
+          aria-hidden="true"
+        />
+      </div>
+
+      <div className="hero-content-layer">
+        <header className="navbar">
+          <Link href="#hero" className="logo tracking-widest uppercase-styled" aria-label={PORTFOLIO_DATA.name}>
+            <span className="logo-leaf">&#10022;</span> 4th
+          </Link>
+          <nav className="nav-island" aria-label="Main Navigation">
+            <Link href="#projects" className="nav-item" style={{ color: isDark ? '#d1d5db' : undefined, transition: 'color 0.8s ease' }}>PROJECTS</Link>
+            <Link href="#experience" className="nav-item" style={{ color: isDark ? '#d1d5db' : undefined, transition: 'color 0.8s ease' }}>EXPERIENCE</Link>
+            <Link href="#connect" className="nav-item" style={{ color: isDark ? '#d1d5db' : undefined, transition: 'color 0.8s ease' }}>CONNECT</Link>
+          </nav>
+          <div className="social-header-group">
+            <button
+              onClick={toggleTheme}
+              className="social-chip cursor-pointer"
+              style={{
+                color: isDark ? '#fff' : undefined,
+                borderColor: isDark ? '#6b7280' : undefined,
+                transition: 'all 0.8s ease',
+              }}
+              title="Toggle Theme"
+            >
+              {isDark ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="social-chip" style={{ color: isDark ? '#fff' : undefined, borderColor: isDark ? '#6b7280' : undefined, transition: 'all 0.8s ease' }} title="GitHub Profile">
+              <span>GITHUB</span>
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-chip" style={{ color: isDark ? '#fff' : undefined, borderColor: isDark ? '#6b7280' : undefined, transition: 'all 0.8s ease' }} title="LinkedIn Profile">
+              <span>LINKEDIN</span>
+            </a>
+            <a href="https://mail.google.com/mail/?view=cm&to=alfredoventurina@gmail.com" target="_blank" className="social-chip chip-email" title="Direct Email">
+              <span>EMAIL</span>
+            </a>
+          </div>
+        </header>
+
+        <div className="hero-center-container">
+          <div className="hero-center-aura" style={{ opacity: isDark ? 0.15 : undefined, transition: 'opacity 1.2s ease' }} aria-hidden="true" />
+          <div className="hero-center-content reveal-on-scroll">
+            <h1
+              className="hero-title-dramatic"
+              style={{
+                color: isDark ? '#ffffff' : undefined,
+                textShadow: isDark ? '0 4px 50px rgba(255,255,255,0.15)' : undefined,
+                transition: 'color 1.2s ease, text-shadow 1.2s ease',
+              }}
+            >
+              {PORTFOLIO_DATA.name}
+            </h1>
+            <div
+              className="hero-badge liquid-glass rounded-full"
+              style={{
+                background: isDark ? 'rgba(255,255,255,0.1)' : undefined,
+                color: isDark ? '#fff' : undefined,
+                borderColor: isDark ? 'rgba(255,255,255,0.2)' : undefined,
+                transition: 'all 1.2s ease',
+              }}
+            >
+              <span className="badge-pulse-sun" />
+              <span>{PORTFOLIO_DATA.role}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="scroll-indicator-container">
+          <Link
+            href="#projects"
+            className="scroll-indicator"
+            style={{
+              color: isDark ? '#fff' : undefined,
+              borderColor: isDark ? 'rgba(255,255,255,0.4)' : undefined,
+              background: isDark ? 'rgba(255,255,255,0.1)' : undefined,
+              transition: 'all 0.8s ease',
+            }}
+            aria-label="Scroll down to explore Projects"
+          >
+            <span>&#8595;</span>
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ========== Projects Section ========== */
+const ProjectsSection = ({ isDark }: { isDark: boolean }) => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const cardsPerPage = 3;
+  const totalPages = Math.ceil(PORTFOLIO_DATA.projects.length / cardsPerPage);
+
+  const goToPage = (direction: 'left' | 'right') => {
+    setCurrentPage(prev => {
+      if (direction === 'right') return Math.min(prev + 1, totalPages - 1);
+      return Math.max(prev - 1, 0);
+    });
+  };
+
+  return (
+    <section id="projects" style={{ padding: '8rem 0', transition: 'all 1.2s ease' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+        {/* Section Header */}
+        <div className="reveal-on-scroll" style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '0.6rem' }}>
+            <span className="section-prefix" style={{ color: isDark ? '#eab308' : undefined }}>// STUFF I WORKED ON</span>
+            <span className="animated-line" />
+          </div>
+          <h2
+            className="section-title"
+            style={{
+              color: isDark ? '#ffffff' : undefined,
+              textShadow: isDark ? 'none' : undefined,
+              transition: 'color 1.2s ease',
+            }}
+          >
+            Featured Projects
+          </h2>
+          <p
+            className="section-subtitle"
+            style={{
+              color: isDark ? '#9ca3af' : undefined,
+              textShadow: isDark ? 'none' : undefined,
+              margin: '0 auto',
+              transition: 'color 1.2s ease',
+            }}
+          >
+            Learning projects, passion projects, stuff I worked on as a student.
+          </p>
+        </div>
+
+        {/* Slider Controls */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+          <span style={{ fontSize: '0.8rem', color: isDark ? '#6b7280' : 'var(--sage-muted)', marginRight: 'auto', fontWeight: 700, letterSpacing: '0.08em' }}>
+            {currentPage + 1} / {totalPages}
+          </span>
+          <button
+            onClick={() => goToPage('left')}
+            disabled={currentPage === 0}
+            style={{
+              width: 40, height: 40, borderRadius: '50%',
+              border: `1px solid ${isDark ? '#4b5563' : 'var(--glass-border)'}`,
+              background: 'transparent',
+              color: isDark ? '#fff' : 'var(--olive-deep)',
+              cursor: currentPage === 0 ? 'not-allowed' : 'pointer',
+              opacity: currentPage === 0 ? 0.35 : 1,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: '1.1rem',
+              transition: 'all 0.3s ease',
+            }}
+            aria-label="Previous projects"
+          >
+            &#8592;
+          </button>
+          <button
+            onClick={() => goToPage('right')}
+            disabled={currentPage === totalPages - 1}
+            style={{
+              width: 40, height: 40, borderRadius: '50%',
+              border: `1px solid ${isDark ? '#4b5563' : 'var(--glass-border)'}`,
+              background: 'transparent',
+              color: isDark ? '#fff' : 'var(--olive-deep)',
+              cursor: currentPage === totalPages - 1 ? 'not-allowed' : 'pointer',
+              opacity: currentPage === totalPages - 1 ? 0.35 : 1,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: '1.1rem',
+              transition: 'all 0.3s ease',
+            }}
+            aria-label="Next projects"
+          >
+            &#8594;
+          </button>
+        </div>
+
+        {/* Slider Track — transform-based animation */}
+        <div className="reveal-on-scroll" style={{ overflow: 'hidden', padding: '2rem 1rem', margin: '-2rem -1rem' }}>
+          <div
+            style={{
+              display: 'flex',
+              gap: '2rem',
+              transform: `translateX(calc(-${currentPage} * (100% + 2rem)))`,
+              transition: 'transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)',
+            }}
+          >
+            {PORTFOLIO_DATA.projects.map((project, index) => {
+              const tagClasses = ['tag-peach', 'tag-sage', 'tag-gold'];
+              return (
+                <article
+                  key={index}
+                  className="liquid-card-dynamic"
+                  style={{
+                    flex: '0 0 calc((100% - 4rem) / 3)',
+                    padding: '1.5rem 2rem',
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center',
+                    background: isDark ? 'rgba(0,0,0,0.8)' : undefined,
+                    borderColor: isDark ? 'rgba(255,255,255,0.1)' : undefined,
+                    color: isDark ? '#d1d5db' : undefined,
+                    transition: 'all 0.7s ease',
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '1rem', fontSize: '0.78rem' }}>
+                    <span className="project-id" style={{ color: isDark ? '#eab308' : undefined, letterSpacing: '0.1em', fontWeight: 800, fontSize: '0.75rem' }}>
+                      MODULE_{String(index + 1).padStart(2, '0')}
+                    </span>
+                    <div style={{ display: 'flex', gap: '0.75rem' }}>
+                      {project.demo && (
+                        <a href={project.demo} target="_blank" rel="noopener noreferrer" className="project-link" style={{ color: isDark ? '#fff' : undefined, background: isDark ? 'rgba(255,255,255,0.1)' : undefined, transition: 'all 0.3s ease' }}>
+                          [DEMO]
+                        </a>
+                      )}
+                      {project.github && (
+                        <a href={project.github} target="_blank" rel="noopener noreferrer" className="project-link" style={{ color: isDark ? '#fff' : undefined, background: isDark ? 'rgba(255,255,255,0.1)' : undefined, transition: 'all 0.3s ease' }}>
+                          [CODE]
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                  {project.thumbnail && (
+                    <div style={{ width: '100%', height: 160, borderRadius: 8, overflow: 'hidden', border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(200,200,200,0.5)'}`, marginBottom: '1rem' }}>
+                      <img src={project.thumbnail} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }} />
+                    </div>
+                  )}
+
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: isDark ? '#fff' : 'var(--olive-deep)', marginBottom: '0.5rem', transition: 'color 1.2s ease' }}>
+                    {project.title}
+                  </h3>
+                  <p className="custom-scrollbar" style={{ 
+                    fontSize: '0.88rem', lineHeight: 1.7, 
+                    color: isDark ? '#9ca3af' : 'var(--sage-muted)', 
+                    flexGrow: 1, maxWidth: '100%', width: '100%',
+                    transition: 'color 1.2s ease',
+                    height: '7.5rem',
+                    overflowY: 'auto',
+                    overflowX: 'hidden',
+                    paddingRight: '0.5rem',
+                    textAlign: 'left'
+                  }}>
+                    {project.description}
+                  </p>
+
+                  <div style={{ marginTop: '1.25rem', width: '100%', paddingTop: '1rem', paddingBottom: '0.5rem', borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(165,145,120,0.15)'}` }}>
+                    <div className="tags-marquee-wrapper">
+                      <div className="tags-marquee-content">
+                        {project.tags.map((tag, tagIndex) => (
+                          <span
+                            key={`tag-a-${tagIndex}`}
+                            className={`project-tag ${tagClasses[tagIndex % tagClasses.length]}`}
+                            style={{
+                              background: isDark ? 'rgba(255,255,255,0.1)' : undefined,
+                              color: isDark ? '#d1d5db' : undefined,
+                              borderColor: isDark ? '#4b5563' : undefined,
+                              transition: 'all 0.5s ease',
+                            }}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                        {/* Duplicate tags for seamless loop */}
+                        {project.tags.map((tag, tagIndex) => (
+                          <span
+                            key={`tag-b-${tagIndex}`}
+                            className={`project-tag ${tagClasses[tagIndex % tagClasses.length]}`}
+                            style={{
+                              background: isDark ? 'rgba(255,255,255,0.1)' : undefined,
+                              color: isDark ? '#d1d5db' : undefined,
+                              borderColor: isDark ? '#4b5563' : undefined,
+                              transition: 'all 0.5s ease',
+                            }}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ========== Experience Section ========== */
+const ExperienceSection = ({ isDark }: { isDark: boolean }) => {
+  return (
+    <section id="experience" style={{ padding: '4rem 0 8rem', transition: 'all 1.2s ease' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+        {/* Section Header */}
+        <div className="reveal-on-scroll" style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '0.6rem' }}>
+            <span className="section-prefix" style={{ color: isDark ? '#eab308' : undefined }}>// WHAT I'VE BEEN DOING</span>
+            <span className="animated-line" />
+          </div>
+          <h2
+            className="section-title"
+            style={{
+              color: isDark ? '#ffffff' : undefined,
+              textShadow: isDark ? 'none' : undefined,
+              transition: 'color 1.2s ease',
+            }}
+          >
+            Experience
+          </h2>
+          <p
+            className="section-subtitle"
+            style={{
+              color: isDark ? '#9ca3af' : undefined,
+              textShadow: isDark ? 'none' : undefined,
+              margin: '0 auto',
+              transition: 'color 1.2s ease',
+            }}
+          >
+            A chronological overview of my journey and growth in software engineering.
+          </p>
+        </div>
+
+        {/* Timeline */}
+        <div style={{ position: 'relative', maxWidth: '800px', margin: '0 auto' }}>
+          {/* Vertical line */}
+          <div
+            style={{
+              position: 'absolute',
+              left: 28,
+              top: 8,
+              bottom: 8,
+              width: 2,
+              background: isDark
+                ? 'linear-gradient(180deg, #eab308 0%, rgba(234,179,8,0.1) 100%)'
+                : 'linear-gradient(180deg, var(--sun-gold) 0%, rgba(212,154,66,0.1) 100%)',
+              transition: 'background 1.2s ease',
+            }}
+            aria-hidden="true"
+          />
+
+          {PORTFOLIO_DATA.experience.map((exp, index) => (
+            <div
+              key={index}
+              className="reveal-on-scroll"
+              style={{
+                display: 'flex',
+                gap: '2rem',
+                marginBottom: index < PORTFOLIO_DATA.experience.length - 1 ? '2.5rem' : 0,
+                position: 'relative',
+              }}
+            >
+              {/* Year dot + badge */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, width: 56 }}>
+                <div
+                  style={{
+                    width: 14,
+                    height: 14,
+                    borderRadius: '50%',
+                    background: isDark ? '#eab308' : 'var(--sun-gold)',
+                    border: `3px solid ${isDark ? '#0a0a0a' : '#f4efe8'}`,
+                    boxShadow: `0 0 0 3px ${isDark ? 'rgba(234,179,8,0.3)' : 'rgba(212,154,66,0.3)'}`,
+                    position: 'relative',
+                    zIndex: 2,
+                    transition: 'all 1.2s ease',
+                  }}
+                />
+                <span
+                  style={{
+                    marginTop: '0.5rem',
+                    fontSize: '0.72rem',
+                    fontWeight: 800,
+                    letterSpacing: '0.08em',
+                    color: isDark ? '#eab308' : 'var(--sun-gold)',
+                    background: isDark ? '#0a0a0a' : '#f4efe8',
+                    padding: '0.15rem 0.35rem',
+                    position: 'relative',
+                    zIndex: 2,
+                    whiteSpace: 'nowrap',
+                    transition: 'all 1.2s ease',
+                  }}
+                >
+                  {exp.year}
+                </span>
+              </div>
+
+              {/* Content card */}
+              <div
+                className="liquid-card-dynamic"
+                style={{
+                  flex: 1,
+                  padding: '1.25rem 1.5rem',
+                  background: isDark ? 'rgba(0,0,0,0.6)' : undefined,
+                  borderColor: isDark ? 'rgba(255,255,255,0.08)' : undefined,
+                  transition: 'all 0.7s ease',
+                  borderRadius: 16,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.6rem', marginBottom: '0.4rem', flexWrap: 'wrap' }}>
+                  <h3 style={{
+                    fontSize: '1.05rem', fontWeight: 800, margin: 0,
+                    color: isDark ? '#fff' : 'var(--olive-deep)',
+                    transition: 'color 1.2s ease',
+                  }}>
+                    {exp.role}
+                  </h3>
+                  {exp.company && (
+                    <span style={{
+                      fontSize: '0.8rem', fontWeight: 700,
+                      color: isDark ? '#eab308' : 'var(--sun-gold)',
+                      transition: 'color 1.2s ease',
+                    }}>
+                      @ {exp.company}
+                    </span>
+                  )}
+                </div>
+                <p style={{
+                  fontSize: '0.84rem', lineHeight: 1.7, margin: 0,
+                  color: isDark ? '#9ca3af' : 'var(--sage-muted)',
+                  transition: 'color 1.2s ease',
+                }}>
+                  {exp.desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ========== Connect Section ========== */
+const ConnectSection = ({ isDark }: { isDark: boolean }) => {
+  const connectCards = [
+    {
+      label: '// REPOSITORIES & CODE',
+      icon: '✦',
+      title: 'GitHub Profile',
+      desc: 'Dive into my messy, but mostly functional, codebases.',
+      href: 'https://github.com',
+      btnText: 'EXPLORE GITHUB // @ALFREDO',
+      btnClass: 'btn-gh',
+      labelColor: isDark ? '#22c55e' : undefined,
+    },
+    {
+      label: '// PROFESSIONAL NETWORK',
+      icon: '✤',
+      title: 'LinkedIn Profile',
+      desc: 'Connect for engineering career opportunities, technical architecture consulting, and professional networking.',
+      href: 'https://linkedin.com',
+      btnText: 'CONNECT ON LINKEDIN',
+      btnClass: 'btn-li',
+      labelColor: isDark ? '#eab308' : undefined,
+    },
+    {
+      label: '// EMAIL ME DIRECTLY!',
+      icon: '☼',
+      title: 'Direct Email Inbox',
+      desc: 'Have a specific project idea, pipeline requirement, or general inquiry? My personal inbox is always open.',
+      href: 'https://mail.google.com/mail/?view=cm&to=alfredoventurina@gmail.com',
+      btnText: 'SEND DIRECT EMAIL',
+      btnClass: 'btn-email',
+      labelColor: isDark ? '#fb923c' : undefined,
+    },
+  ];
+
+  return (
+    <section id="connect" style={{ padding: '8rem 0 5rem', transition: 'all 1.2s ease' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+        {/* Section Header */}
+        <div className="reveal-on-scroll" style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '0.6rem' }}>
+            <span className="section-prefix" style={{ color: isDark ? '#eab308' : undefined }}>// LET'S CONNECT!</span>
+            <span className="animated-line" />
+          </div>
+          <h2
+            className="section-title"
+            style={{ color: isDark ? '#ffffff' : undefined, textShadow: isDark ? 'none' : undefined, transition: 'color 1.2s ease' }}
+          >
+            Let&apos;s Connect &amp; Collaborate
+          </h2>
+          <p
+            className="section-subtitle"
+            style={{ color: isDark ? '#9ca3af' : undefined, textShadow: isDark ? 'none' : undefined, margin: '0 auto', transition: 'color 1.2s ease' }}
+          >
+            Explore my open-source codebases, connect with me professionally, or drop a direct message into my personal inbox.
+          </p>
+        </div>
+
+        {/* Connect Cards Grid */}
+        <div className="reveal-on-scroll" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem' }}>
+          {connectCards.map((card, i) => (
+            <div
+              key={i}
+              className="liquid-card-dynamic"
+              style={{
+                textAlign: 'center',
+                display: 'flex', flexDirection: 'column', alignItems: 'center',
+                padding: '2rem',
+                background: isDark ? 'rgba(0,0,0,0.8)' : undefined,
+                borderColor: isDark ? 'rgba(255,255,255,0.1)' : undefined,
+                transition: 'all 0.7s ease',
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', width: '100%' }}>
+                <span className="connect-platform" style={{ color: card.labelColor, letterSpacing: '0.12em', fontWeight: 800, fontSize: '0.76rem' }}>{card.label}</span>
+                <span className="connect-icon">{card.icon}</span>
+              </div>
+              <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: isDark ? '#fff' : 'var(--olive-deep)', marginBottom: '0.85rem', transition: 'color 1.2s ease' }}>
+                {card.title}
+              </h3>
+              <p style={{ fontSize: '0.92rem', color: isDark ? '#9ca3af' : 'var(--sage-muted)', lineHeight: 1.75, marginBottom: '2rem', flexGrow: 1, transition: 'color 1.2s ease' }}>
+                {card.desc}
+              </p>
+              <a
+                href={card.href}
+                target={card.href.startsWith('mailto') ? undefined : '_blank'}
+                rel={card.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+                className={`connect-btn ${card.btnClass}`}
+                style={{
+                  width: '100%', justifyContent: 'center', gap: '0.75rem',
+                  background: isDark ? 'rgba(255,255,255,0.1)' : undefined,
+                  color: isDark ? '#fff' : undefined,
+                  borderColor: isDark ? '#4b5563' : undefined,
+                  transition: 'all 0.3s ease',
+                }}
+              >
+                <span>{card.btnText}</span>
+                <span>&#8594;</span>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ========== Footer ========== */
+const Footer = ({ isDark }: { isDark: boolean }) => {
+  return (
+    <footer
+      className="footer"
+      style={{
+        background: isDark ? '#000000' : undefined,
+        borderColor: isDark ? '#000000' : undefined,
+        transition: 'all 1.2s ease',
+      }}
+    >
+      <div className="footer-ambient" style={{ display: isDark ? 'none' : undefined }} />
+      <div className="footer-content">
+        <p className="footer-text" style={{ color: isDark ? '#6b7280' : undefined, transition: 'color 1.2s ease' }}>
+          &copy; 2026 <strong style={{ color: isDark ? '#d1d5db' : undefined }}>ALFREDO VENTURINA</strong> // THANKS FOR VISITING.
+        </p>
+      </div>
+    </footer>
+  );
+};
