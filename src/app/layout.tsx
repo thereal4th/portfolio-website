@@ -1,20 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-jetbrains",
 });
 
 export const metadata: Metadata = {
-  title: "Alfredo Venturina Portfolio",
-  description: "Created by 4th",
+  title: "Alfredo Venturina | Software Engineer & Architect",
+  description: "Ethereal, dreamy, and dynamic soft warm spring portfolio of Alfredo Venturina",
 };
 
 export default function RootLayout({
@@ -23,10 +19,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" className="scroll-smooth">
+      <body className={`${jetBrainsMono.variable} antialiased transition-colors duration-1000`}>
         {children}
       </body>
     </html>
