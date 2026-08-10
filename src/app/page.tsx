@@ -152,6 +152,7 @@ const HeroSection = ({ theme, toggleTheme }: { theme: string; toggleTheme: () =>
       <div className="video-background-wrapper">
         <video
           autoPlay muted loop playsInline
+          poster="TrainSceneryPosterFrame.png"
           className="seamless-video"
           style={{
             position: 'fixed', top: 0, left: 0,
@@ -167,6 +168,7 @@ const HeroSection = ({ theme, toggleTheme }: { theme: string; toggleTheme: () =>
         />
         <video
           autoPlay muted loop playsInline
+          poster="TrainSceneryDarkModePosterFrame.png"
           className="seamless-video"
           style={{
             position: 'fixed', top: 0, left: 0,
