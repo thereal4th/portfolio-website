@@ -9,8 +9,8 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Alfredo Venturina | Software Engineer & Architect",
-  description: "Ethereal, dreamy, and dynamic soft warm spring portfolio of Alfredo Venturina",
+  title: "Alfredo Venturina | Software Engineer",
+  description: "Hi! I'm 4th! Welcome to my portfolio, hope you enjoy your visit!",
 };
 
 export default function RootLayout({
