@@ -306,10 +306,10 @@ const HeroSection = ({ theme, toggleTheme }: { theme: string; toggleTheme: () =>
             >
               {isDark ? <Sun size={16} /> : <Moon size={16} />}
             </button>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="social-chip" style={{ color: isDark ? '#fff' : undefined, borderColor: isDark ? '#6b7280' : undefined, transition: 'all 0.8s ease' }} title="GitHub Profile">
+            <a href="https://github.com/thereal4th" target="_blank" rel="noopener noreferrer" className="social-chip" style={{ color: isDark ? '#fff' : undefined, borderColor: isDark ? '#6b7280' : undefined, transition: 'all 0.8s ease' }} title="GitHub Profile">
               <span>GITHUB</span>
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-chip" style={{ color: isDark ? '#fff' : undefined, borderColor: isDark ? '#6b7280' : undefined, transition: 'all 0.8s ease' }} title="LinkedIn Profile">
+            <a href="https://www.linkedin.com/in/alfredo-venturina-iv-0475b532a/" target="_blank" rel="noopener noreferrer" className="social-chip" style={{ color: isDark ? '#fff' : undefined, borderColor: isDark ? '#6b7280' : undefined, transition: 'all 0.8s ease' }} title="LinkedIn Profile">
               <span>LINKEDIN</span>
             </a>
             <a href="https://mail.google.com/mail/?view=cm&to=alfredoventurina@gmail.com" target="_blank" className="social-chip chip-email" title="Direct Email">
