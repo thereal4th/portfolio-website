@@ -727,7 +727,7 @@ const ConnectSection = ({ isDark }: { isDark: boolean }) => {
       icon: '✤',
       title: 'LinkedIn Profile',
       desc: 'Connect for engineering career opportunities, technical architecture consulting, and professional networking.',
-      href: 'https://linkedin.com',
+      href: 'https://www.linkedin.com/in/alfredo-venturina-iv-0475b532a/',
       btnText: 'CONNECT ON LINKEDIN',
       btnClass: 'btn-li',
       labelColor: isDark ? '#eab308' : undefined,
