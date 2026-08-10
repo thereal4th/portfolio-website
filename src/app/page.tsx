@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Sun, Moon } from 'lucide-react';
 import PORTFOLIO_DATA from '../data/PortfolioData';
@@ -135,6 +135,85 @@ const DreamParticles = ({ isDark }: { isDark: boolean }) => {
   );
 };
 
+/* ========== Seamless Video Loop Component ========== */
+const SeamlessVideoLoop = ({ 
+  src, 
+  poster, 
+  className, 
+  baseOpacity, 
+  isVisible, 
+  style 
+}: { 
+  src: string; 
+  poster: string; 
+  className: string; 
+  baseOpacity: number; 
+  isVisible: boolean; 
+  style: React.CSSProperties;
+}) => {
+  const [activeVid, setActiveVid] = useState(0);
+  const vid0Ref = useRef<HTMLVideoElement>(null);
+  const vid1Ref = useRef<HTMLVideoElement>(null);
+  const isStarted = useRef(false);
+
+  useEffect(() => {
+    if (vid0Ref.current && !isStarted.current) {
+      vid0Ref.current.play().catch(e => console.log('Autoplay prevented:', e));
+      isStarted.current = true;
+    }
+  }, []);
+
+  const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>, currentIndex: number) => {
+    const vid = e.currentTarget;
+    if (!vid.duration) return;
+    const timeLeft = vid.duration - vid.currentTime;
+    
+    // Crossfade 1.5 seconds before the video ends
+    if (timeLeft <= 1.5 && activeVid === currentIndex) {
+       const nextIndex = currentIndex === 0 ? 1 : 0;
+       const nextVid = nextIndex === 0 ? vid0Ref.current : vid1Ref.current;
+       if (nextVid) {
+         nextVid.currentTime = 0;
+         nextVid.play().catch(e => console.log('Play prevented:', e));
+         setActiveVid(nextIndex);
+       }
+    }
+  };
+
+  return (
+    <div style={{ ...style, opacity: isVisible ? baseOpacity : 0, transition: 'opacity 1.5s ease-in-out' }}>
+      <video
+        ref={vid0Ref}
+        src={src}
+        poster={poster}
+        className={className}
+        style={{
+          position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'fill',
+          opacity: activeVid === 0 ? 1 : 0,
+          transition: activeVid === 0 ? 'opacity 1.5s ease-in-out' : 'opacity 0s 1.5s',
+          zIndex: activeVid === 0 ? 2 : 1
+        }}
+        muted playsInline
+        onTimeUpdate={(e) => handleTimeUpdate(e, 0)}
+      />
+      <video
+        ref={vid1Ref}
+        src={src}
+        poster={poster}
+        className={className}
+        style={{
+          position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'fill',
+          opacity: activeVid === 1 ? 1 : 0,
+          transition: activeVid === 1 ? 'opacity 1.5s ease-in-out' : 'opacity 0s 1.5s',
+          zIndex: activeVid === 1 ? 2 : 1
+        }}
+        muted playsInline
+        onTimeUpdate={(e) => handleTimeUpdate(e, 1)}
+      />
+    </div>
+  );
+};
+
 /* ========== Hero Section ========== */
 const HeroSection = ({ theme, toggleTheme }: { theme: string; toggleTheme: () => void }) => {
   const isDark = theme === 'dark';
@@ -150,37 +229,33 @@ const HeroSection = ({ theme, toggleTheme }: { theme: string; toggleTheme: () =>
     >
       {/* Background Videos - both always mounted, crossfade via opacity */}
       <div className="video-background-wrapper">
-        <video
-          autoPlay muted loop playsInline
+        <SeamlessVideoLoop
+          src="TrainScenery.mp4"
           poster="TrainSceneryPosterFrame.png"
           className="seamless-video"
+          baseOpacity={1}
+          isVisible={!isDark}
           style={{
             position: 'fixed', top: 0, left: 0,
             width: '100vw', height: '100vh',
-            objectFit: 'fill',
             pointerEvents: 'none',
-            opacity: isDark ? 0 : 1,
             filter: 'sepia(0.12) saturate(1.15) contrast(0.92) brightness(1.04)',
-            transition: 'opacity 1.5s ease-in-out',
             zIndex: -2,
           }}
-          src="TrainScenery.mp4"
         />
-        <video
-          autoPlay muted loop playsInline
+        <SeamlessVideoLoop
+          src="TrainSceneryDarkMode.mp4"
           poster="TrainSceneryDarkModePosterFrame.png"
           className="seamless-video"
+          baseOpacity={0.4}
+          isVisible={isDark}
           style={{
             position: 'fixed', top: 0, left: 0,
             width: '100vw', height: '100vh',
-            objectFit: 'fill',
             pointerEvents: 'none',
-            opacity: isDark ? 0.4 : 0,
             filter: 'none',
-            transition: 'opacity 1.5s ease-in-out',
             zIndex: -1,
           }}
-          src="TrainSceneryDarkMode.mp4"
         />
 
         <div
