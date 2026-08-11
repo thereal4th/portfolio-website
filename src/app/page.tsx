@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Sun, Moon } from 'lucide-react';
 import PORTFOLIO_DATA from '../data/PortfolioData';
+import SectionBackgrounds from '../components/SectionBackgrounds';
 
 export type Theme = 'light' | 'dark';
 
@@ -52,6 +53,7 @@ export default function Home() {
         backgroundColor: isDark ? '#0a0a0a' : '#f4efe8',
         color: isDark ? '#e5e5e5' : '#252e1f',
         transition: 'background-color 1.5s ease-in-out, color 1.5s ease-in-out',
+        overflowX: 'hidden',
       }}
     >
       <DreamParticles isDark={isDark} />
@@ -88,9 +90,12 @@ export default function Home() {
           }}
           aria-hidden="true"
         />
-        <ProjectsSection isDark={isDark} />
-        <ExperienceSection isDark={isDark} />
-        <ConnectSection isDark={isDark} />
+        <div style={{ position: 'relative', width: '100%' }}>
+          <SectionBackgrounds isDark={isDark} />
+          <ProjectsSection isDark={isDark} />
+          <ExperienceSection isDark={isDark} />
+          <ConnectSection isDark={isDark} />
+        </div>
       </main>
 
       <Footer isDark={isDark} />
@@ -306,10 +311,10 @@ const HeroSection = ({ theme, toggleTheme }: { theme: string; toggleTheme: () =>
             >
               {isDark ? <Sun size={16} /> : <Moon size={16} />}
             </button>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="social-chip" style={{ color: isDark ? '#fff' : undefined, borderColor: isDark ? '#6b7280' : undefined, transition: 'all 0.8s ease' }} title="GitHub Profile">
+            <a href="https://github.com/thereal4th" target="_blank" rel="noopener noreferrer" className="social-chip" style={{ color: isDark ? '#fff' : undefined, borderColor: isDark ? '#6b7280' : undefined, transition: 'all 0.8s ease' }} title="GitHub Profile">
               <span>GITHUB</span>
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-chip" style={{ color: isDark ? '#fff' : undefined, borderColor: isDark ? '#6b7280' : undefined, transition: 'all 0.8s ease' }} title="LinkedIn Profile">
+            <a href="https://www.linkedin.com/in/alfredo-venturina-iv-0475b532a/" target="_blank" rel="noopener noreferrer" className="social-chip" style={{ color: isDark ? '#fff' : undefined, borderColor: isDark ? '#6b7280' : undefined, transition: 'all 0.8s ease' }} title="LinkedIn Profile">
               <span>LINKEDIN</span>
             </a>
             <a href="https://mail.google.com/mail/?view=cm&to=alfredoventurina@gmail.com" target="_blank" className="social-chip chip-email" title="Direct Email">

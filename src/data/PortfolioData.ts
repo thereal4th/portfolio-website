@@ -97,6 +97,7 @@ const PORTFOLIO_DATA: PortfolioData = {
       iconType: "Globe",
       color: "from-blue-500/20 to-cyan-500/20",
       github: "https://github.com/alfagamez22/codekadahackathon",
+      demo: "https://drive.google.com/file/d/1dpPzpCXc8yhmXBfTF4QvutwE_QaFSjXm/view?usp=sharing",
     },
     {
       title: "JobMatch.AI",
