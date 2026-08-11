@@ -35,7 +35,6 @@ html, body {
   background-color: var(--cream-mist);
   color: var(--olive-deep);
   scroll-behavior: smooth;
-  overflow-x: hidden;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
@@ -1188,6 +1187,201 @@ html, body {
 }
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+  z-index: 2;
+}
+
+/* Gentle Wispy Meadow Horizon on the Footer */
+.footer-ambient {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 140px;
+  background: radial-gradient(ellipse at bottom, rgba(255, 252, 246, 0.95) 0%, rgba(245, 238, 225, 0.55) 60%, transparent 100%);
+  filter: blur(25px);
+  pointer-events: none;
+  z-index: 1;
+  animation: wispy-drift 9s infinite alternate ease-in-out;
+}
+
+@keyframes wispy-drift {
+  0% { transform: translateX(-52%) scaleY(0.9); opacity: 0.85; }
+  100% { transform: translateX(-48%) scaleY(1.1); opacity: 1; }
+}
+
+.footer-content {
+  max-width: 1480px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.footer-text {
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--sage-muted);
+}
+
+.footer-text strong {
+  color: var(--olive-deep);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 1150px) {
+  .tech-grid, .projects-grid, .connect-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .tech-matrix-card:last-child, .project-card:last-child, .connect-card:last-child {
+    grid-column: span 2;
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-title-dramatic {
+    font-size: clamp(2.6rem, 8vw, 3.8rem) !important;
+  }
+
+  .hero-center-aura {
+    width: 90vw;
+    height: 50vh;
+    filter: blur(30px);
+    background: radial-gradient(circle at center, rgba(255, 252, 246, 0.45) 0%, rgba(255, 246, 230, 0.25) 60%, transparent 100%);
+  }
+
+  /* Warm ivory-cream glow overlay on mobile to maximize readability */
+  .mobile-readability-overlay {
+    background: linear-gradient(180deg, rgba(250, 245, 237, 0.35) 0%, rgba(250, 245, 237, 0.25) 45%, rgba(250, 245, 237, 0.45) 100%);
+    backdrop-filter: blur(2px);
+  }
+
+  /* Navigation stack adaptation */
+  .navbar {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .logo {
+    position: static;
+  }
+
+  .social-header-group {
+    position: static;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: -0.2rem;
+  }
+  
+  .nav-island {
+    gap: 2.2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .tech-grid, .projects-grid, .connect-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tech-matrix-card:last-child, .project-card:last-child, .connect-card:last-child {
+    grid-column: span 1;
+    max-width: 100%;
+  }
+
+  .telemetry-console {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem 2rem;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title-dramatic {
+    font-size: 2.3rem !important;
+  }
+  
+  .hero-content-layer {
+    padding: 1.5rem 5% 4.5rem 5%;
+  }
+
+  .nav-island {
+    gap: 1.4rem;
+  }
+
+  .nav-item {
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+  }
+
+  .hero-badge {
+    font-size: 0.74rem;
+    padding: 0.5rem 1.15rem;
+  }
+}
+
+
+/* Responsive overrides for slider + connect grid */
+@media (max-width: 900px) {
+  #projects article {
+    flex: 0 0 calc((100% - 2rem) / 2) !important;
+  }
+  #connect > div > div:last-child {
+    grid-template-columns: 1fr !important;
+  }
+}
+@media (max-width: 640px) {
+  #projects article {
+    flex: 0 0 100% !important;
+  }
+}
+
+/* Tags Marquee Animation */
+@keyframes auto-scroll-tags {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 0.25rem)); }
+}
+.tags-marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+.tags-marquee-content {
+  display: flex;
+  width: max-content;
+  gap: 0.5rem;
+  animation: auto-scroll-tags 15s linear infinite;
+}
+.tags-marquee-content:hover {
+  animation-play-state: paused;
+}
+
+
+/* Custom clean scrollbars for cards */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: rgba(165, 145, 120, 0.4);
@@ -1201,4 +1395,43 @@ html, body {
 }
 .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* --- Section Backgrounds Animations --- */
+.falling-leaf {
+  animation: fall-leaf linear infinite;
+}
+
+@keyframes fall-leaf {
+  0% {
+    top: -5%;
+    transform: rotate(var(--rotate-start, 0deg));
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    top: 105%;
+    transform: rotate(var(--rotate-end, 360deg));
+    opacity: 0;
+  }
+}
+
+.twinkling-star {
+  animation: twinkle ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.1;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
 }

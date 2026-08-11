@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Sun, Moon } from 'lucide-react';
 import PORTFOLIO_DATA from '../data/PortfolioData';
+import SectionBackgrounds from '../components/SectionBackgrounds';
 
 export type Theme = 'light' | 'dark';
 
@@ -52,6 +53,7 @@ export default function Home() {
         backgroundColor: isDark ? '#0a0a0a' : '#f4efe8',
         color: isDark ? '#e5e5e5' : '#252e1f',
         transition: 'background-color 1.5s ease-in-out, color 1.5s ease-in-out',
+        overflowX: 'hidden',
       }}
     >
       <DreamParticles isDark={isDark} />
@@ -88,9 +90,12 @@ export default function Home() {
           }}
           aria-hidden="true"
         />
-        <ProjectsSection isDark={isDark} />
-        <ExperienceSection isDark={isDark} />
-        <ConnectSection isDark={isDark} />
+        <div style={{ position: 'relative', width: '100%' }}>
+          <SectionBackgrounds isDark={isDark} />
+          <ProjectsSection isDark={isDark} />
+          <ExperienceSection isDark={isDark} />
+          <ConnectSection isDark={isDark} />
+        </div>
       </main>
 
       <Footer isDark={isDark} />
